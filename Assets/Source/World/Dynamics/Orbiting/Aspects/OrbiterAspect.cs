@@ -12,13 +12,15 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         public void RotateAround(float deltaTime) 
         {
             var speed = 20f;
-            var radius = 2f;
+            var body = orbiter.ValueRO.Body;
+            var radius = body.Radius;
+            var center = body.Center;
            
             var angle = orbiter.ValueRO.CurrentAngle;
             angle = angle + speed * deltaTime;
 
             var rotation = Quaternion.Euler(0, angle, 0);
-            localTransform.ValueRW.Position = rotation * new Vector3(radius, 0, 0);
+            localTransform.ValueRW.Position = rotation * new Vector3(radius, 0, 0) + center;
             // update angle on orbiter
             orbiter.ValueRW.CurrentAngle = angle;
         }

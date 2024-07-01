@@ -1,3 +1,4 @@
+using Unity.Burst;
 using Unity.Entities;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
@@ -9,11 +10,24 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             state.RequireForUpdate<Orbiter>();
         }
 
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var aspect in SystemAPI.Query<OrbiterAspect>())
+            var orbitingJob = new OrbitingJob()
             {
-                aspect.RotateAround(SystemAPI.Time.DeltaTime);
+                deltaTime = SystemAPI.Time.DeltaTime,
+            };
+            orbitingJob.ScheduleParallel();
+        }
+
+        [BurstCompile]
+        public partial struct OrbitingJob : IJobEntity
+        {
+            public float deltaTime;
+
+            public void Execute(OrbiterAspect aspect)
+            {
+                aspect.RotateAround(deltaTime);
             }
         }
     }

@@ -13,7 +13,8 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 // extract entity from orbiting body
-                AddComponent(entity, new Orbiter(authoring._body.transform.position));
+                var bodyData = new BodyData(authoring._body.transform.position, Random.Range(2.5f, 8f));
+                AddComponent(entity, new Orbiter(bodyData, Random.Range(0, 360)));
             }
         }
     }
