@@ -9,7 +9,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         private BodyData _bodyData;
         private float _currentAngle;
 
-        public Orbiter(BodyData data) : this(data, 0) {}
+        public Orbiter(BodyData data) : this(data, 0) { }
 
         public Orbiter(BodyData data, float angle)
         {
