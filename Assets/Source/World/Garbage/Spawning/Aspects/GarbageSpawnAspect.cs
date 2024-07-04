@@ -1,6 +1,7 @@
 using SpaceJunkyard.World.Astronomical;
 using SpaceJunkyard.World.Dynamics.Orbiting;
 using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
@@ -9,6 +10,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     {
         public readonly RefRW<GarbageSpawner> garbageSpawner;
         public readonly RefRO<AstronomicalBody> astronomicalBody;
+        public readonly RefRO<LocalTransform> localTransform;
 
         public void SpawnGarbage(double elapsedTime, EntityCommandBuffer entityCommandBuffer, GarbageSpawnAssetReference assetReference)
         {
@@ -19,9 +21,11 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             for (var i = 0; i < spawnCount; i++)
             {
                 var spawn = entityCommandBuffer.Instantiate(assetReference.GarbagePrefab);
-                var bodyData = new OrbitData(astronomicalBody.ValueRO.Name, Random.Range(2.5f, 8f));
 
-                entityCommandBuffer.AddComponent(spawn, new Orbiter(bodyData, Random.Range(0f, 360f)));
+                // add orbit info
+                entityCommandBuffer.AddComponent(spawn, new Orbiter(Random.Range(2.5f, 8f), Random.Range(0f, 360f)));
+                // add shared orbitable point
+                entityCommandBuffer.AddComponent(spawn, new OrbiterPoint(astronomicalBody.ValueRO.Name, localTransform.ValueRO.Position));
             }
 
             garbageSpawner.ValueRW.CurrentGarbageCount += spawnCount;

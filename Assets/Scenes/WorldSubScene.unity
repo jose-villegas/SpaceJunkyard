@@ -118,37 +118,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &184920627
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 184920628}
-  m_Layer: 0
-  m_Name: Satellites
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &184920628
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184920627}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &739895621
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +262,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1773708688100871038, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1773708688100871038, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: m_LocalPosition.y
@@ -346,5 +315,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 9201130954591248442}
   - {fileID: 743826605}
-  - {fileID: 184920628}
   - {fileID: 1317226789}

@@ -6,19 +6,19 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
     public struct Orbiter : IComponentData
     {
-        private OrbitData _bodyData;
+        private float _radius;
         private float _currentAngle;
 
-        public Orbiter(OrbitData data) : this(data, 0) { }
+        public Orbiter(float radius) : this(radius, 0) { }
 
-        public Orbiter(OrbitData data, float angle)
+        public Orbiter(float radius, float angle)
         {
-            _bodyData = data;
+            _radius = radius;
             _currentAngle = angle;
         }
 
 
-        public OrbitData Orbit { get => _bodyData; }
+        public float Radius { get => _radius; }
         public float CurrentAngle { get => _currentAngle; set => _currentAngle = value % 360f; }
     }
 }
