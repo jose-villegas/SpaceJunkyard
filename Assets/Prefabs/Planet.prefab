@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3796332594256336833}
   - component: {fileID: 2279049588426364954}
   - component: {fileID: 2642548938615150614}
+  - component: {fileID: 8010804613966733780}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -138,3 +139,15 @@ MonoBehaviour:
   _spawnRate: 2
   _spawnCount: 10
   _randomCount: 1
+--- !u!114 &8010804613966733780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147066610764161879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6efb291f2d7bf4ea15bc13aba8bc98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

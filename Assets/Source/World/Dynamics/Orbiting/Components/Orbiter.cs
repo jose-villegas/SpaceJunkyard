@@ -18,7 +18,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         }
 
 
-        public OrbitData Body { get => _bodyData; }
+        public OrbitData Orbit { get => _bodyData; }
         public float CurrentAngle { get => _currentAngle; set => _currentAngle = value % 360f; }
     }
 }

@@ -2,8 +2,6 @@ using SpaceJunkyard.World.Astronomical;
 using SpaceJunkyard.World.Dynamics.Orbiting;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Transforms;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
@@ -12,7 +10,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public void OnCreate(ref SystemState state)
         {
             var configuration = SystemAPI.QueryBuilder().WithAll<GarbageSpawnAssetReference>().Build();
-            var spawners = SystemAPI.QueryBuilder().WithAll<GarbageSpawner, AstronomicalBody>().Build();
+            var spawners = SystemAPI.QueryBuilder().WithAll<GarbageSpawner, AstronomicalBody, Orbitable>().Build();
 
             state.RequireAnyForUpdate(configuration, spawners);
         }

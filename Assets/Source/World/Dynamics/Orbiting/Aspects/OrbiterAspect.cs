@@ -1,4 +1,6 @@
+using SpaceJunkyard.World.Astronomical;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -9,13 +11,11 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         public readonly RefRW<Orbiter> orbiter;
         public readonly RefRW<LocalTransform> localTransform;
 
-        public void RotateAround(float deltaTime)
+        public void RotateAround(float deltaTime, Vector3 center)
         {
             // TODO: Calculate using approximate physics radius & mass
             var speed = 20f;
-            var body = orbiter.ValueRO.Body;
-            var radius = body.Radius;
-            var center = Vector3.zero;
+            var radius = orbiter.ValueRO.Orbit.Radius;
 
             var angle = orbiter.ValueRO.CurrentAngle;
             angle = angle + speed * deltaTime;
