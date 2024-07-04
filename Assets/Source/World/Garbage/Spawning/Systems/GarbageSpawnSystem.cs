@@ -1,3 +1,4 @@
+using SpaceJunkyard.World.Astronomical;
 using SpaceJunkyard.World.Dynamics.Orbiting;
 using Unity.Burst;
 using Unity.Entities;
@@ -11,7 +12,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public void OnCreate(ref SystemState state)
         {
             var configuration = SystemAPI.QueryBuilder().WithAll<GarbageSpawnAssetReference>().Build();
-            var spawners = SystemAPI.QueryBuilder().WithAll<GarbageSpawner>().Build();
+            var spawners = SystemAPI.QueryBuilder().WithAll<GarbageSpawner, AstronomicalBody>().Build();
 
             state.RequireAnyForUpdate(configuration, spawners);
         }
@@ -23,23 +24,9 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             var elapsedTime = SystemAPI.Time.ElapsedTime;
 
-            foreach ((var garbageSpawner, var localTransform) in SystemAPI.Query<RefRW<GarbageSpawner>, RefRO<LocalTransform>>())
+            foreach (var aspect in SystemAPI.Query<GarbageSpawnAspect>())
             {
-                if (!garbageSpawner.ValueRO.CanSpawn(elapsedTime)) continue;
-
-                var spawnCount = garbageSpawner.ValueRO.SpawnCount;
-
-                for (var i = 0; i < spawnCount; i++)
-                {
-                    var spawn = entityCommandBuffer.Instantiate(assetReference.GarbagePrefab);
-                    var bodyData = new OrbitData(localTransform.ValueRO.Position, Random.Range(2.5f, 8f));
-
-                    entityCommandBuffer.AddComponent(spawn, new Orbiter(bodyData, Random.Range(0f, 360f)));
-                }
-
-                garbageSpawner.ValueRW.CurrentGarbageCount += spawnCount;
-                // set timer
-                garbageSpawner.ValueRW.SpawnCheckTick(elapsedTime);
+                aspect.SpawnGarbage(elapsedTime, entityCommandBuffer, assetReference);
             }
 
             entityCommandBuffer.Playback(state.EntityManager);

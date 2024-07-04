@@ -1,4 +1,6 @@
+using System;
 using Unity.Entities;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SpaceJunkyard.World.Astronomical
@@ -10,7 +12,7 @@ namespace SpaceJunkyard.World.Astronomical
             public override void Bake(AstronomicalBodyAuthoring authoring)
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new AstronomicalBody());
+                AddComponent(entity, new AstronomicalBody(Guid.NewGuid().ToString().Truncate(20)));
             }
         }
     }

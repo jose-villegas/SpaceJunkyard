@@ -15,7 +15,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             var speed = 20f;
             var body = orbiter.ValueRO.Body;
             var radius = body.Radius;
-            var center = body.Center;
+            var center = Vector3.zero;
 
             var angle = orbiter.ValueRO.CurrentAngle;
             angle = angle + speed * deltaTime;
