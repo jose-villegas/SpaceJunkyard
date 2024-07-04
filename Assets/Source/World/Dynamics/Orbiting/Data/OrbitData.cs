@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
-    public struct BodyData
+    public struct OrbitData
     {
         private Vector3 _center;
         private float _radius;
 
-        public BodyData(Vector3 center, float radius)
+        public OrbitData(Vector3 center, float radius)
         {
             _center = center;
             _radius = radius;

@@ -21,24 +21,25 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         {
             var assetReference = SystemAPI.GetSingleton<GarbageSpawnAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            var elapsedTime = SystemAPI.Time.ElapsedTime;
 
             foreach ((var garbageSpawner, var localTransform) in SystemAPI.Query<RefRW<GarbageSpawner>, RefRO<LocalTransform>>())
             {
-                if (!garbageSpawner.ValueRO.CanSpawn()) continue;
+                if (!garbageSpawner.ValueRO.CanSpawn(elapsedTime)) continue;
 
                 var spawnCount = garbageSpawner.ValueRO.SpawnCount;
 
                 for (var i = 0; i < spawnCount; i++)
                 {
                     var spawn = entityCommandBuffer.Instantiate(assetReference.GarbagePrefab);
-                    var bodyData = new BodyData(localTransform.ValueRO.Position, Random.Range(2.5f, 8f));
+                    var bodyData = new OrbitData(localTransform.ValueRO.Position, Random.Range(2.5f, 8f));
 
                     entityCommandBuffer.AddComponent(spawn, new Orbiter(bodyData, Random.Range(0f, 360f)));
                 }
 
                 garbageSpawner.ValueRW.CurrentGarbageCount += spawnCount;
                 // set timer
-                garbageSpawner.ValueRW.SpawnCheckTick();
+                garbageSpawner.ValueRW.SpawnCheckTick(elapsedTime);
             }
 
             entityCommandBuffer.Playback(state.EntityManager);

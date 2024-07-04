@@ -17,25 +17,25 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public bool RandomCount { get => _randomCount; }
 
         private int _currentGarbageCount;
-        private DateTime _currentTick;
+        private double _currentTick;
         public int CurrentGarbageCount { get => _currentGarbageCount; set => _currentGarbageCount = value; }
-        public DateTime CurrentTick { get => _currentTick; set => _currentTick = value; }
+        public double CurrentTick { get => _currentTick; set => _currentTick = value; }
 
-        public bool CanSpawn()
+        public bool CanSpawn(double elapsedTime)
         {
             if (IsOverflow) return false;
 
-            var currentTime = DateTime.Now;
+            var currentTime = elapsedTime;
             var timeSpan = currentTime - _currentTick;
 
-            if (timeSpan.TotalSeconds < SpawnRate) return false;
+            if (timeSpan < SpawnRate) return false;
 
             return true;
         }
 
-        public void SpawnCheckTick()
+        public void SpawnCheckTick(double elapsedTime)
         {
-            _currentTick = DateTime.Now;
+            _currentTick = elapsedTime;
         }
 
 
@@ -46,7 +46,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             _spawnCount = spawnCount;
             _randomCount = randomCount;
             _currentGarbageCount = 0;
-            _currentTick = DateTime.Now;
+            _currentTick = 0;
         }
 
         public readonly bool IsOverflow => _currentGarbageCount >= _spawnLimit;
