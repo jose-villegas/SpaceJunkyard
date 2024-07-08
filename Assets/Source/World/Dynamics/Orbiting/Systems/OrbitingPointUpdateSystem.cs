@@ -3,6 +3,7 @@ using SpaceJunkyard.World.Astronomical;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
     public partial struct OrbitingPointUpdateSystem : ISystem
     {
+        private EntityQuery _orbitablesQuery;
+        private NativeArray<UpdatePoint> _orbitablePositions;
+
         public void OnCreate(ref SystemState state)
         {
             // state update
@@ -19,18 +23,23 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             var bodies = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, Orbitable>().Build();
 
             state.RequireAnyForUpdate(orbiters, bodies);
+
+            _orbitablesQuery = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, Orbitable, LocalTransform>().Build();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var orbitables = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, Orbitable, LocalTransform>().Build();
-            var orbitablePositions = CollectionHelper.CreateNativeArray<UpdatePoint>(orbitables.CalculateEntityCount(), Allocator.Temp);
             var index = 0;
+
+            if (_orbitablePositions == null || _orbitablePositions.Length == 0) 
+            {
+                _orbitablePositions = CollectionHelper.CreateNativeArray<UpdatePoint>(_orbitablesQuery.CalculateEntityCount(), Allocator.Persistent);
+            }
 
             foreach ((var astronomicalBody, var localTransform) in SystemAPI.Query<RefRO<AstronomicalBody>, RefRO<LocalTransform>>().WithAll<Orbitable>())
             {
-                orbitablePositions[index++] = new UpdatePoint()
+                _orbitablePositions[index++] = new UpdatePoint()
                 {
                     name = astronomicalBody.ValueRO.Name,
                     position = localTransform.ValueRO.Position
@@ -42,7 +51,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
                 var bodyName = orbiterPoint.ValueRO.Body;
 
                 // check if position from within orbitable positions
-                foreach (var orbitable in orbitablePositions)
+                foreach (var orbitable in _orbitablePositions)
                 {
                     if (orbitable.name == bodyName)
                     {
