@@ -1,5 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
@@ -7,7 +8,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
     public partial struct OrbiterPoint : IComponentData
     {
         private FixedString32Bytes _body;
-        private Vector3 _center;
+        private float3 _center;
 
         public OrbiterPoint(FixedString32Bytes name, Vector3 center)
         {
