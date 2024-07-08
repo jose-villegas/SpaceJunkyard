@@ -1,22 +1,17 @@
-using Unity.Collections;
+using SpaceJunkyard.World.Astronomical;
 using Unity.Entities;
-using Unity.Mathematics;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
     public partial struct OrbiterPoint : IComponentData
     {
-        private FixedString32Bytes _body;
-        private float3 _center;
+        private AstronomicalBody _body;
 
-        public OrbiterPoint(FixedString32Bytes name, Vector3 center)
+        public OrbiterPoint(AstronomicalBody body)
         {
-            _body = name;
-            _center = center;
+            _body = body;
         }
 
-        public FixedString32Bytes Body { get => _body; }
-        public Vector3 Center { get => _center; set => _center = value; }
+        public AstronomicalBody Body { get => _body; set => _body = value; }
     }
 }

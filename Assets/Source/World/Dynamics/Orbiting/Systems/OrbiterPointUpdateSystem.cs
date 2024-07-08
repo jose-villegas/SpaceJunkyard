@@ -3,16 +3,14 @@ using SpaceJunkyard.World.Astronomical;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
-    public partial struct OrbitingPointUpdateSystem : ISystem
+    public partial struct OrbiterPointUpdateSystem : ISystem
     {
         private EntityQuery _orbitablesQuery;
-        private NativeArray<UpdatePoint> _orbitablePositions;
+        private NativeArray<AstronomicalBody> _orbitableBodies;
 
         public void OnCreate(ref SystemState state)
         {
@@ -32,40 +30,33 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         {
             var index = 0;
 
-            if (_orbitablePositions == null || _orbitablePositions.Length == 0) 
+            if (_orbitableBodies == null || _orbitableBodies.Length == 0)
             {
-                _orbitablePositions = CollectionHelper.CreateNativeArray<UpdatePoint>(_orbitablesQuery.CalculateEntityCount(), Allocator.Persistent);
+                _orbitableBodies = CollectionHelper.CreateNativeArray<AstronomicalBody>(_orbitablesQuery.CalculateEntityCount(), Allocator.Persistent);
             }
 
-            foreach ((var astronomicalBody, var localTransform) in SystemAPI.Query<RefRO<AstronomicalBody>, RefRO<LocalTransform>>().WithAll<Orbitable>())
+            foreach ((var astronomicalBody, var localTransform) in SystemAPI.Query<RefRW<AstronomicalBody>, RefRO<LocalTransform>>().WithAll<Orbitable>())
             {
-                _orbitablePositions[index++] = new UpdatePoint()
-                {
-                    name = astronomicalBody.ValueRO.Name,
-                    position = localTransform.ValueRO.Position
-                };
+                // update center position
+                astronomicalBody.ValueRW.GravityCenter = localTransform.ValueRO.Position;
+                // save copy for value updates
+                _orbitableBodies[index++] = astronomicalBody.ValueRO;
             }
 
             foreach (var orbiterPoint in SystemAPI.Query<RefRW<OrbiterPoint>>())
             {
-                var bodyName = orbiterPoint.ValueRO.Body;
+                var bodyName = orbiterPoint.ValueRO.Body.Name;
 
                 // check if position from within orbitable positions
-                foreach (var orbitable in _orbitablePositions)
+                foreach (var orbitable in _orbitableBodies)
                 {
-                    if (orbitable.name == bodyName)
+                    if (orbitable.Name == bodyName)
                     {
-                        orbiterPoint.ValueRW.Center = orbitable.position;
+                        orbiterPoint.ValueRW.Body = orbitable;
                         break;
                     }
                 }
             }
-        }
-
-        private struct UpdatePoint
-        {
-            public Vector3 position;
-            public FixedString32Bytes name;
         }
     }
 }

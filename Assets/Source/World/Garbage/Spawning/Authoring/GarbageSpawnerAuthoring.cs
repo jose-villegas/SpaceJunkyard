@@ -22,7 +22,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             public override void Bake(GarbageSpawnerAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new GarbageSpawner(authoring.SpawnLimit, authoring.SpawnRate, 
+                AddComponent(entity, new GarbageSpawner(authoring.SpawnLimit, authoring.SpawnRate,
                     authoring.SpawnCount, authoring.RandomCount, authoring.SpawnRange));
             }
         }

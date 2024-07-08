@@ -12,12 +12,17 @@ namespace SpaceJunkyard.World.Astronomical
         public string Name { get => _name; }
         public float Mass { get => _mass; }
 
+        public AstronomicalBody CreateComponent()
+        {
+            return new AstronomicalBody(Name, Mass, transform.position);
+        }
+
         private class Baker : Baker<AstronomicalBodyAuthoring>
         {
             public override void Bake(AstronomicalBodyAuthoring authoring)
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new AstronomicalBody(authoring.Name, authoring.Mass));
+                AddComponent(entity, authoring.CreateComponent());
             }
         }
     }

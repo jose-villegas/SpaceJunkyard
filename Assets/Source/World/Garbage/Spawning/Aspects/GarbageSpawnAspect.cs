@@ -29,7 +29,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
                 var spawnPlace = Random.Range(spawnRange.x, spawnRange.y);
                 entityCommandBuffer.AddComponent(spawn, new Orbiter(spawnPlace, Random.Range(0f, 360f)));
                 // add shared orbitable point
-                entityCommandBuffer.AddComponent(spawn, new OrbiterPoint(astronomicalBody.ValueRO.Name, localTransform.ValueRO.Position));
+                entityCommandBuffer.AddComponent(spawn, new OrbiterPoint(astronomicalBody.ValueRO));
             }
 
             garbageSpawner.ValueRW.CurrentGarbageCount += spawnCount;

@@ -29,7 +29,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
                 // add orbiter parameters
                 AddComponent(entity, new Orbiter(authoring.Radius, authoring.InitialAngle));
                 // add orbiting body identifier
-                AddComponent(entity, new OrbiterPoint(orbitable.Name, orbitable.transform.position));
+                AddComponent(entity, new OrbiterPoint(orbitable.CreateComponent()));
             }
         }
     }
