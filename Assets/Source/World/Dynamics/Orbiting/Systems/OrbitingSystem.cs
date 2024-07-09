@@ -1,8 +1,6 @@
 using SpaceJunkyard.World.Astronomical;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {

@@ -1,5 +1,6 @@
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -14,19 +15,22 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         [BurstCompile]
         public void RotateAround(float deltaTime)
         {
-            var radius = orbiter.ValueRO.Radius;
+            var apogee = orbiter.ValueRO.Apogee;
+            var perigee = orbiter.ValueRO.Perigee;
             var body = orbiterPoint.ValueRO.Body;
-
-            var mass = body.Mass * 10000000000f;
-            var center = body.GravityCenter;
-            var speed = Mathf.Sqrt((float)(Constants.GRAV * mass / radius));
-
+            var center = (float3)body.GravityCenter;
             var angle = orbiter.ValueRO.CurrentAngle;
-            angle = angle + speed * deltaTime;
 
-            var rotation = Quaternion.Euler(0, angle, 0);
-            localTransform.ValueRW.Position = rotation * new Vector3(radius, 0, 0) + center;
+            // update position given ellipse formula               
+            var position = new float3(center.x + apogee * math.sin(angle), 0, center.z + perigee * math.cos(angle));
+            localTransform.ValueRW.Position = position;
+
             // update angle on orbiter
+            var mass = body.Mass;
+            var radius = math.distance(center, position);
+            var speed = math.sqrt(Constants.GRAV * mass / radius);
+
+            angle = (float)(angle + speed * deltaTime);
             orbiter.ValueRW.CurrentAngle = angle;
         }
     }

@@ -27,7 +27,8 @@ namespace SpaceJunkyard.World.Garbage.Spawning
                 // add orbit info
                 var spawnRange = garbageSpawner.ValueRO.SpawnRange;
                 var spawnPlace = Random.Range(spawnRange.x, spawnRange.y);
-                entityCommandBuffer.AddComponent(spawn, new Orbiter(spawnPlace, Random.Range(0f, 360f)));
+                var angle = Random.Range(0f, (float)(2f * Constants.PI));
+                entityCommandBuffer.AddComponent(spawn, new Orbiter(spawnPlace, spawnPlace, angle));
                 // add shared orbitable point
                 entityCommandBuffer.AddComponent(spawn, new OrbiterPoint(astronomicalBody.ValueRO));
             }
