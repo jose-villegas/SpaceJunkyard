@@ -44,16 +44,29 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
                 _orbitableBodies[index++] = astronomicalBody.ValueRO;
             }
 
-            foreach (var orbiterPoint in SystemAPI.Query<RefRW<OrbiterPoint>>())
+            // schedule orbiter point update
+            var orbiterPontUpdateJob = new OrbiterPointUpdateJob()
             {
-                var bodyName = orbiterPoint.ValueRO.Body.Name;
+                orbitableBodies = _orbitableBodies,
+            };
+            orbiterPontUpdateJob.ScheduleParallel();
+        }
+
+        [BurstCompile]
+        public partial struct OrbiterPointUpdateJob : IJobEntity
+        {
+            public NativeArray<AstronomicalBody> orbitableBodies;
+
+            public void Execute(ref OrbiterPoint orbiterPoint)
+            {
+                var bodyName = orbiterPoint.Body.Name;
 
                 // check if position from within orbitable positions
-                foreach (var orbitable in _orbitableBodies)
+                foreach (var orbitable in orbitableBodies)
                 {
                     if (orbitable.Name == bodyName)
                     {
-                        orbiterPoint.ValueRW.Body = orbitable;
+                        orbiterPoint.Body = orbitable;
                         break;
                     }
                 }
