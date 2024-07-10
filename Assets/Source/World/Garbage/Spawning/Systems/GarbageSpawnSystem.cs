@@ -24,7 +24,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
 
             foreach (var aspect in SystemAPI.Query<GarbageSpawnAspect>())
             {
-                aspect.SpawnGarbage(elapsedTime, entityCommandBuffer, assetReference);
+                aspect.SpawnGarbage(elapsedTime, ref entityCommandBuffer, ref assetReference);
             }
 
             entityCommandBuffer.Playback(state.EntityManager);

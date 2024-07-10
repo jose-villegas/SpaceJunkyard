@@ -1,9 +1,11 @@
 using SpaceJunkyard.World.Astronomical;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
+    [UpdateInGroup(typeof(TransformSystemGroup))]
     public partial struct OrbitingSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

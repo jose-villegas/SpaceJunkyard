@@ -14,7 +14,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public readonly RefRO<LocalTransform> localTransform;
 
         [BurstCompile]
-        public void SpawnGarbage(double elapsedTime, EntityCommandBuffer entityCommandBuffer, GarbageSpawnAssetReference assetReference)
+        public void SpawnGarbage(double elapsedTime, ref EntityCommandBuffer entityCommandBuffer, ref GarbageSpawnAssetReference assetReference)
         {
             if (!garbageSpawner.ValueRO.CanSpawn(elapsedTime)) return;
 
