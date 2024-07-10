@@ -467,8 +467,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 364707070}
-  _apogee: 896
-  _perigee: 724
+  _apogee: 846
+  _perigee: 674
   _initialAngle: 0.331613
 --- !u!1 &739895621
 GameObject:
@@ -1018,8 +1018,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 364707070}
-  _apogee: 535.76
-  _perigee: 529.92
+  _apogee: 485.76
+  _perigee: 479.92
   _initialAngle: 0.872665
 --- !u!1 &1317226788
 GameObject:
@@ -1231,8 +1231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 364707070}
-  _apogee: 479.28
-  _perigee: 384
+  _apogee: 429.28
+  _perigee: 334
   _initialAngle: 3.03687
 --- !u!1001 &1616912163
 PrefabInstance:
@@ -1325,6 +1325,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8147066610764161879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1616912166}
+    - targetCorrespondingSourceObject: {fileID: 8147066610764161879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1616912180}
   m_SourcePrefab: {fileID: 100100000, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
 --- !u!4 &1616912164 stripped
 Transform:
@@ -1349,9 +1352,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 364707070}
-  _apogee: 708
-  _perigee: 688
+  _apogee: 658
+  _perigee: 638
   _initialAngle: 6.2590475
+--- !u!114 &1616912180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616912165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ee4f2f48f7d5446b33a95d0cb9fcaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1653794682
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1455,9 +1470,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8147066610764161879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1653794685}
-    - targetCorrespondingSourceObject: {fileID: 8147066610764161879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1653794692}
   m_SourcePrefab: {fileID: 100100000, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
 --- !u!1 &1653794683 stripped
 GameObject:
@@ -1485,18 +1497,6 @@ MonoBehaviour:
   _apogee: 1088
   _perigee: 986.6667
   _initialAngle: 0.331613
---- !u!114 &1653794692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653794683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67ee4f2f48f7d5446b33a95d0cb9fcaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1693216888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1612,9 +1612,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 1616912165}
-  _apogee: 35
-  _perigee: 40
-  _initialAngle: 0
+  _apogee: 40.5
+  _perigee: 36.2
+  _initialAngle: 0.401426
 --- !u!1001 &1720765308
 PrefabInstance:
   m_ObjectHideFlags: 0
