@@ -15,14 +15,11 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         [BurstCompile]
         public void RotateAround(float deltaTime)
         {
-            var apogee = orbiter.ValueRO.Apogee;
-            var perigee = orbiter.ValueRO.Perigee;
             var body = orbiterPoint.ValueRO.Body;
             var center = (float3)body.GravityCenter;
-            var angle = orbiter.ValueRO.CurrentAngle;
 
-            // update position given ellipse formula               
-            var position = new float3(center.x + apogee * math.sin(angle), 0, center.z + perigee * math.cos(angle));
+            // update position given ellipse formula    
+            var position = orbiter.ValueRO.CalculateCurrentEllipticalPosition(center);
             localTransform.ValueRW.Position = position;
 
             // update angle on orbiter
@@ -30,6 +27,8 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             var radius = math.distance(center, position);
             var speed = math.sqrt(Constants.GRAV * mass / radius);
 
+            // increase angle of orbit
+            var angle = orbiter.ValueRO.CurrentAngle;
             angle = (float)(angle + speed * deltaTime);
             orbiter.ValueRW.CurrentAngle = angle;
         }

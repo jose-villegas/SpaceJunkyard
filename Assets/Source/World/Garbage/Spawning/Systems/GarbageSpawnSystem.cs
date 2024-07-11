@@ -5,6 +5,7 @@ using Unity.Entities;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
+    [UpdateAfter(typeof(OrbitingSystem))]
     public partial struct GarbageSpawnSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

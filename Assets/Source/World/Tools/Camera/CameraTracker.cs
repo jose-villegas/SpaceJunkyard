@@ -6,7 +6,13 @@ namespace SpaceJunkyard.World.Tools.Camera
 {
     public class CameraTracker : MonoBehaviour
     {
+        [SerializeField] private bool _useLerp;
+        [SerializeField] private float _lerpSpeed = 1f;
+
         private EntityManager _manager;
+
+        public bool UseLerp { get => _useLerp;  }
+        public float LerpSpeed { get => _lerpSpeed;  }
 
         private void Awake()
         {
