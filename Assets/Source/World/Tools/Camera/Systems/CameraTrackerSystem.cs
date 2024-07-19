@@ -1,7 +1,6 @@
 using System;
 using Unity.Entities;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Tools.Camera
 {

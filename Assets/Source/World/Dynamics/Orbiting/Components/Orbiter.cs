@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
+    /// <summary>
+    /// An entity that posses an elliptical orbit around a position
+    /// </summary>
     public struct Orbiter : IComponentData
     {
         private float _apogee;

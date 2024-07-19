@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
+    /// <summary>
+    /// Describes the garbage spawning behaviour for this entity
+    /// </summary>
     public struct GarbageSpawner : IComponentData
     {
         private int _spawnLimit;

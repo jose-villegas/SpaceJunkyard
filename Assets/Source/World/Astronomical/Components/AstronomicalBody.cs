@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Astronomical
 {
+    /// <summary>
+    /// Used to identify objects with mass in space
+    /// </summary>
     public struct AstronomicalBody : IComponentData
     {
         private FixedString32Bytes _name;
