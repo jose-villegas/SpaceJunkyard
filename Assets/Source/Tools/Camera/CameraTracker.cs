@@ -1,9 +1,8 @@
 
-using System;
 using Unity.Entities;
 using UnityEngine;
 
-namespace SpaceJunkyard.World.Tools.Camera
+namespace SpaceJunkyard.Tools.Camera
 {
     public class CameraTracker : MonoBehaviour
     {

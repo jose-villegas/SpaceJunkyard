@@ -2,7 +2,7 @@ using System;
 using Unity.Entities;
 using Unity.Transforms;
 
-namespace SpaceJunkyard.World.Tools.Camera
+namespace SpaceJunkyard.Tools.Camera
 {
     [UpdateInGroup(typeof(TransformSystemGroup), OrderLast = true)]
     public partial class CameraTrackerSystem : SystemBase

@@ -1,10 +1,10 @@
+using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Astronomical;
 using SpaceJunkyard.World.Dynamics.Orbiting;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
@@ -15,7 +15,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public readonly RefRO<LocalTransform> localTransform;
 
         [BurstCompile]
-        public void SpawnGarbage(double elapsedTime, ref EntityCommandBuffer entityCommandBuffer, ref GarbageSpawnAssetReference assetReference)
+        public void SpawnGarbage(double elapsedTime, ref EntityCommandBuffer entityCommandBuffer, ref GameAssetReference assetReference)
         {
             if (!garbageSpawner.ValueRO.CanSpawn(elapsedTime)) return;
 

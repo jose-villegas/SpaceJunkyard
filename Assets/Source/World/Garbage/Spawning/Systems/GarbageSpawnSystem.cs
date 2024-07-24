@@ -1,3 +1,4 @@
+using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Astronomical;
 using SpaceJunkyard.World.Dynamics.Orbiting;
 using Unity.Burst;
@@ -10,7 +11,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     {
         public void OnCreate(ref SystemState state)
         {
-            var configuration = SystemAPI.QueryBuilder().WithAll<GarbageSpawnAssetReference>().Build();
+            var configuration = SystemAPI.QueryBuilder().WithAll<GameAssetReference>().Build();
             var spawners = SystemAPI.QueryBuilder().WithAll<GarbageSpawner, AstronomicalBody, Orbitable>().Build();
 
             state.RequireAnyForUpdate(configuration, spawners);
@@ -19,7 +20,9 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var assetReference = SystemAPI.GetSingleton<GarbageSpawnAssetReference>();
+            return;
+
+            var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             var elapsedTime = SystemAPI.Time.ElapsedTime;
 
