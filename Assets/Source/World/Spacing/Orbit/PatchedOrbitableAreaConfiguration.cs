@@ -8,21 +8,18 @@ namespace SpaceJunkyard.World.Spacing
     public struct PatchedOrbitableAreaConfiguration
     {
         [SerializeField] private OrbitableAreaType _orbitableAreaType;
-        [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private float _patchSize;
-        [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private float _baseHeight;
-        [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private float _extension;
+        [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private int _patchCount;
+        [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private float _centerHeight;
 
         public OrbitableAreaType OrbitableAreaType { get => _orbitableAreaType; }
-        public float PatchSize { get => _patchSize; }
-        public float BaseHeight { get => _baseHeight; }
-        public float Extension { get => _extension; }
+        public float PatchCount { get => _patchCount; }
+        public float CenterHeight { get => _centerHeight; }
 
-        public PatchedOrbitableAreaConfiguration(OrbitableAreaType orbitableAreaType, float patchSize, float baseHeight, float extension)
+        public PatchedOrbitableAreaConfiguration(OrbitableAreaType orbitableAreaType, int patchCount, float centerHeight)
         {
             _orbitableAreaType = orbitableAreaType;
-            _patchSize = patchSize;
-            _baseHeight = baseHeight;
-            _extension = extension;
+            _patchCount = patchCount;
+            _centerHeight = centerHeight;
         }
     }
 }
