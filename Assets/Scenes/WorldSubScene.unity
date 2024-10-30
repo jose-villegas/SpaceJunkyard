@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1180,6 +1181,18 @@ PrefabInstance:
     - target: {fileID: 2279049588426364954, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _name
       value: Earth
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642548938615150614, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642548938615150614, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnCount.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642548938615150614, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnCount.y
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2642548938615150614, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _spawnRange.x
