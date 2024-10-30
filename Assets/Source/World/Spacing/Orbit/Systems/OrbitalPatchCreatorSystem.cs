@@ -27,7 +27,6 @@ namespace SpaceJunkyard.World.Spacing
             {
                 var requestRO = request.ValueRO;
 
-                // garbage patch creation logic
                 var garbagePatchConfiguration = requestRO.GarbageAreaConfiguration;
                 InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration);
 
@@ -38,7 +37,13 @@ namespace SpaceJunkyard.World.Spacing
             entityCommandBuffer.Playback(state.EntityManager);
         }
 
-        private static void InstanceGarbagePatches(ref GameAssetReference assetReference, ref EntityCommandBuffer entityCommandBuffer, RefRO<AstronomicalBody> body, PatchedOrbitableAreaConfiguration garbagePatchConfiguration)
+        private static void InstanceGarbagePatches
+        (
+            ref GameAssetReference assetReference, 
+            ref EntityCommandBuffer entityCommandBuffer,
+            RefRO<AstronomicalBody> body, 
+            PatchedOrbitableAreaConfiguration garbagePatchConfiguration
+        )
         {
             var orbitRadius = garbagePatchConfiguration.CenterHeight;
             var orbitDiameter = 2f * orbitRadius;
@@ -64,7 +69,7 @@ namespace SpaceJunkyard.World.Spacing
                 entityCommandBuffer.SetComponent(newPatch, LocalTransform.FromPositionRotationScale(position, quaternion.identity, patchScale));
 
                 // identify as orbital patch entity
-                entityCommandBuffer.AddComponent(newPatch, new OrbitalPatch());
+                entityCommandBuffer.AddComponent(newPatch, new GarbagePatch());
             }
         }
     }
