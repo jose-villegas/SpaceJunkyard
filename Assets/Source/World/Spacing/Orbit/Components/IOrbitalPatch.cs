@@ -4,7 +4,7 @@ namespace SpaceJunkyard.World.Spacing
 {
     public interface IOrbitalPatch : IComponentData
     {
-        public Entity OrbitableBodyParent { get; }
+        public Entity OrbitableBody { get; }
         OrbitableAreaType OrbitableAreaType { get; }
     }
 }

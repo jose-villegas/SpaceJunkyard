@@ -7,7 +7,7 @@ using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
-    [UpdateBefore(typeof(OrbitingSystem))]
+    [UpdateBefore(typeof(TransformSystemGroup))]
     public partial struct OrbiterPointUpdateSystem : ISystem
     {
         private EntityQuery _orbitablesQuery;

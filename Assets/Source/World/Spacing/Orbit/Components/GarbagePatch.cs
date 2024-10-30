@@ -32,19 +32,19 @@ namespace SpaceJunkyard.World.Spacing
 
     public struct GarbagePatch : IOrbitalPatch
     {
-        private Entity _orbitableBodyParent;
+        private Entity _orbitableBody;
         private GarbageSpawnerConfiguration _garbageSpawnerConfiguration;
         private GarbageSpawnControl _garbageControl;
 
         public OrbitableAreaType OrbitableAreaType { get => OrbitableAreaType.Gargabe; }
 
-        public Entity OrbitableBodyParent => _orbitableBodyParent;
+        public Entity OrbitableBody => _orbitableBody;
 
         public GarbageSpawnerConfiguration GarbageSpawnerConfiguration { get => _garbageSpawnerConfiguration; }
 
         public GarbagePatch(Entity orbitableBodyParent, GarbageSpawnerConfiguration garbageSpawner)
         {
-            _orbitableBodyParent = orbitableBodyParent;
+            _orbitableBody = orbitableBodyParent;
             _garbageSpawnerConfiguration = garbageSpawner;
 
             _garbageControl = new(garbageSpawner);

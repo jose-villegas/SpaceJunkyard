@@ -7,6 +7,7 @@ using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
+    [BurstCompile]
     public readonly partial struct GarbageSpawnAspect : IAspect
     {
         public readonly RefRW<GarbagePatch> garbagePatch;

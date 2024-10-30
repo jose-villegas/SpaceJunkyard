@@ -7,9 +7,11 @@ namespace SpaceJunkyard.World.Spacing
 
     public class RequestOrbitableSpacePatchesAuthoring : MonoBehaviour
     {
+        [SerializeField] private GameObject _patchesContainer;
         [SerializeField] private PatchedOrbitableAreaConfiguration[] _configuration;
 
         public PatchedOrbitableAreaConfiguration[] Configuration { get => _configuration; }
+        public GameObject PatchesContainer { get => _patchesContainer; set => _patchesContainer = value; }
 
         public class Baker : Baker<RequestOrbitableSpacePatchesAuthoring>
         {
@@ -23,6 +25,10 @@ namespace SpaceJunkyard.World.Spacing
                 // check if we have a garbage configuration
                 var gConfig = authoring.Configuration.FirstOrDefault(x => x.OrbitableAreaType == OrbitableAreaType.Gargabe);
                 var cConfig = authoring.Configuration.FirstOrDefault(x => x.OrbitableAreaType == OrbitableAreaType.Construction);
+
+                var containerE = GetEntity(authoring.PatchesContainer, TransformUsageFlags.Dynamic);
+                gConfig.Container = containerE;
+                cConfig.Container = containerE;
 
                 AddComponent(entity, new RequestOrbitableSpacePatches(gConfig, cConfig));
             }

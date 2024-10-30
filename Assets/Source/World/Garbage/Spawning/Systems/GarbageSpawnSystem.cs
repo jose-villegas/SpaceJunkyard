@@ -1,13 +1,12 @@
 using SpaceJunkyard.Assets.Spawning;
-using SpaceJunkyard.World.Astronomical;
-using SpaceJunkyard.World.Dynamics.Orbiting;
 using SpaceJunkyard.World.Spacing;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
-    [UpdateAfter(typeof(OrbitingSystem))]
+    [UpdateAfter(typeof(TransformSystemGroup))]
     public partial struct GarbageSpawnSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -21,8 +20,6 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            //return;
-
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             var elapsedTime = SystemAPI.Time.ElapsedTime;

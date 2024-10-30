@@ -2,10 +2,10 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
+    [BurstCompile]
     public readonly partial struct OrbiterAspect : IAspect
     {
         public readonly RefRW<Orbiter> orbiter;
