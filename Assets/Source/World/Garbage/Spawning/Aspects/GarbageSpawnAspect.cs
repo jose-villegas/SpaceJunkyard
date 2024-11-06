@@ -2,7 +2,6 @@ using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Spacing;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
@@ -19,7 +18,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         {
             var spawnConfiguration = garbagePatch.ValueRO.GarbageSpawnerConfiguration;
 
-            if (!garbagePatch.ValueRW.CanSpawn(elapsedTime)) return;
+            if (!garbagePatch.ValueRO.CanSpawn(elapsedTime)) return;
 
             var instancesToSpawn = spawnConfiguration.SpawnCount;
 

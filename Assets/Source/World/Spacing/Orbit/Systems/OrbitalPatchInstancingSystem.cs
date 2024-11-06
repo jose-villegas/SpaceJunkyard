@@ -9,7 +9,7 @@ using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Spacing
 {
-    public partial struct OrbitalPatchCreatorSystem : ISystem
+    public partial struct OrbitalPatchInstancingSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
@@ -23,7 +23,7 @@ namespace SpaceJunkyard.World.Spacing
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             var garbageSpawnerLookup = state.GetComponentLookup<GarbageSpawnerConfiguration>(true);
-
+            
             foreach ((var request, var body, var entity) in SystemAPI.Query<RefRO<RequestOrbitableSpacePatches>, RefRO<AstronomicalBody>>().WithEntityAccess())
             {
                 var requestRO = request.ValueRO;
@@ -52,7 +52,7 @@ namespace SpaceJunkyard.World.Spacing
             var orbitDiameter = 2f * orbitRadius;
 
             // calculate each patch radius
-            var patchScale = math.PI * (orbitDiameter / garbagePatchConfiguration.PatchCount);
+            var patchSize = math.PI * (orbitDiameter / garbagePatchConfiguration.PatchCount);
             var angleSeparation = math.PI2 / garbagePatchConfiguration.PatchCount;
 
             // create garbage patches circling the center height orbit
@@ -69,14 +69,14 @@ namespace SpaceJunkyard.World.Spacing
 
                 // calculate initial position
                 var position = orbiter.CalculateCurrentEllipticalPosition(orbiterPoint.Body.GravityCenter);
-                entityCommandBuffer.SetComponent(newPatch, LocalTransform.FromPositionRotationScale(position, quaternion.identity, patchScale));
+                entityCommandBuffer.SetComponent(newPatch, LocalTransform.FromPositionRotationScale(position, quaternion.identity, 1f));
 
                 // add parent
                 entityCommandBuffer.AddComponent<Parent>(newPatch);
                 entityCommandBuffer.SetComponent(newPatch, new Parent() { Value =  garbagePatchConfiguration.Container});
 
                 // identify as orbital patch entity
-                entityCommandBuffer.AddComponent(newPatch, new GarbagePatch(orbitingBodyEntity, garbageSpawnerConfiguration.ValueRO));
+                entityCommandBuffer.AddComponent(newPatch, new GarbagePatch(orbitingBodyEntity, garbageSpawnerConfiguration.ValueRO, patchSize));
             }
         }
     }

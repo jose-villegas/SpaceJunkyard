@@ -3,38 +3,12 @@ using Unity.Entities;
 
 namespace SpaceJunkyard.World.Spacing
 {
-    public struct GarbageSpawnControl
-    {
-        // Control fields
-        private int _currentGarbageCount;
-        private double _currentTick;
-
-        public readonly bool IsOverflowed => _currentGarbageCount >= _spawnLimit;
-
-        public int CurrentGarbageCount { get => _currentGarbageCount; set => _currentGarbageCount = value; }
-        public double CurrentTick { get => _currentTick; set => _currentTick = value; }
-        public float SpawnRate { get => _spawnRate; }
-
-        private float _spawnRate;
-        private int _spawnLimit;
-
-        public GarbageSpawnControl(float spawnRate, int spawnLimit)
-        {
-            _spawnRate = spawnRate;
-            _spawnLimit = spawnLimit;
-
-            _currentGarbageCount = 0;
-            _currentTick = 0f;
-        }
-
-        public GarbageSpawnControl(GarbageSpawnerConfiguration configuration) : this(configuration.SpawnRate, configuration.SpawnLimit) { }
-    }
-
     public struct GarbagePatch : IOrbitalPatch
     {
         private Entity _orbitableBody;
         private GarbageSpawnerConfiguration _garbageSpawnerConfiguration;
         private GarbageSpawnControl _garbageControl;
+        private float _patchSize;
 
         public OrbitableAreaType OrbitableAreaType { get => OrbitableAreaType.Gargabe; }
 
@@ -42,12 +16,15 @@ namespace SpaceJunkyard.World.Spacing
 
         public GarbageSpawnerConfiguration GarbageSpawnerConfiguration { get => _garbageSpawnerConfiguration; }
 
-        public GarbagePatch(Entity orbitableBodyParent, GarbageSpawnerConfiguration garbageSpawner)
+        public float PatchSize => _patchSize;
+
+        public GarbagePatch(Entity orbitableBodyParent, GarbageSpawnerConfiguration garbageSpawner, float patchSize)
         {
             _orbitableBody = orbitableBodyParent;
             _garbageSpawnerConfiguration = garbageSpawner;
 
             _garbageControl = new(garbageSpawner);
+            _patchSize = patchSize;
         }
 
         public bool CanSpawn(double elapsedTime)

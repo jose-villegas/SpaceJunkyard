@@ -24,7 +24,7 @@ namespace SpaceJunkyard.Tools.Camera
             {
                 _trackedEntity = currentEntity;
 
-                OnTrackedEntityChanged.Invoke(this, _trackedEntity);
+                OnTrackedEntityChanged?.Invoke(this, _trackedEntity);
             }
 
             TrackedTransform = SystemAPI.GetComponent<LocalToWorld>(_trackedEntity);
