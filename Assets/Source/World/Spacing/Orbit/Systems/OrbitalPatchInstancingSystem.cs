@@ -9,27 +9,34 @@ using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Spacing
 {
+    /// <summary>
+    /// Takes cares of instancing orbital patch prefabs if requested by an <see cref="AstronomicalBody"/>
+    /// </summary>
     public partial struct OrbitalPatchInstancingSystem : ISystem
     {
+        private ComponentLookup<GarbageSpawnerConfiguration> _garbageSpawnerLookup;
+
         public void OnCreate(ref SystemState state)
         {
             var configuration = SystemAPI.QueryBuilder().WithAll<RequestOrbitableSpacePatches, AstronomicalBody>().Build();
+            _garbageSpawnerLookup = state.GetComponentLookup<GarbageSpawnerConfiguration>(true);
+
             state.RequireForUpdate(configuration);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            _garbageSpawnerLookup.Update(ref state);
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            var garbageSpawnerLookup = state.GetComponentLookup<GarbageSpawnerConfiguration>(true);
             
             foreach ((var request, var body, var entity) in SystemAPI.Query<RefRO<RequestOrbitableSpacePatches>, RefRO<AstronomicalBody>>().WithEntityAccess())
             {
                 var requestRO = request.ValueRO;
 
                 var garbagePatchConfiguration = requestRO.GarbageAreaConfiguration;
-                InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration, entity, garbageSpawnerLookup.GetRefRO(entity));
+                InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration, entity, _garbageSpawnerLookup.GetRefRO(entity));
 
                 // remove request
                 entityCommandBuffer.RemoveComponent<RequestOrbitableSpacePatches>(entity);
