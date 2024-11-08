@@ -10,7 +10,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     public struct GarbageSpawnerConfiguration : IComponentData
     {
         private int _spawnLimit;
-        private float _spawnRate;
+        private float2 _spawnRate;
         private int2 _spawnCount;
 
         /// <summary>
@@ -18,11 +18,13 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         /// </summary>
         /// <value></value>
         public readonly int SpawnLimit { get => _spawnLimit; }
+
         /// <summary>
-        /// Controls the frequency in whic garbage is generated
+        /// Controls the frequency in which garbage is generated
         /// </summary>
         /// <value></value>
-        public readonly float SpawnRate { get => _spawnRate; }
+        public readonly float2 SpawnRate { get => _spawnRate; }
+
         /// <summary>
         /// Returns a random value between the spawn instances values
         /// </summary>
@@ -30,10 +32,10 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public readonly int SpawnCount { get => UnityEngine.Random.Range(_spawnCount.x, _spawnCount.y); }
         public readonly Vector2Int SpawnCountValues { get => new(_spawnCount.x, _spawnCount.y); }
 
-        public GarbageSpawnerConfiguration(int spawnLimit, float spawnRate, Vector2Int spawnCount, Vector2 spawnRange)
+        public GarbageSpawnerConfiguration(int spawnLimit, Vector2 spawnRate, Vector2Int spawnCount)
         {
             _spawnLimit = spawnLimit;
-            _spawnRate = spawnRate;
+            _spawnRate = new float2(spawnRate.x, spawnRate.y);
             _spawnCount = new int2(spawnCount.x, spawnCount.y);
         }
     }

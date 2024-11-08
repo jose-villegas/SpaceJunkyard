@@ -1,6 +1,7 @@
 using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Spacing;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
@@ -9,24 +10,64 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     [UpdateAfter(typeof(TransformSystemGroup))]
     public partial struct GarbageSpawnSystem : ISystem
     {
+        private NativeHashMap<Entity, GarbageSpawnControl> _garbageControl;
+
         public void OnCreate(ref SystemState state)
         {
             var configuration = SystemAPI.QueryBuilder().WithAll<GameAssetReference>().Build();
             var spawners = SystemAPI.QueryBuilder().WithAll<GarbagePatch>().Build();
 
             state.RequireAnyForUpdate(configuration, spawners);
+
+            // initialize control map
+            _garbageControl = new NativeHashMap<Entity, GarbageSpawnControl>(spawners.CalculateEntityCount(), Allocator.Persistent);
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
-            var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            var entityCommandBuffer = new EntityCommandBuffer(Allocator.Temp);
             var elapsedTime = SystemAPI.Time.ElapsedTime;
 
-            foreach (var aspect in SystemAPI.Query<GarbageSpawnAspect>())
+            foreach ((var aspect, var entity) in SystemAPI.Query<GarbageSpawnAspect>().WithEntityAccess())
             {
-                aspect.SpawnGarbage(elapsedTime, ref entityCommandBuffer, ref assetReference);
+                var garbagePatch = aspect.garbagePatch.ValueRO;
+                var spawnConfiguration = garbagePatch.GarbageSpawnerConfiguration;
+
+                // if we haven't spawned for this patch, schedule for spawn
+                if (!_garbageControl.TryGetValue(entity, out var control))
+                {
+                    // choose random starting delay for frequency
+                    var delay = UnityEngine.Random.Range(spawnConfiguration.SpawnRate.x, spawnConfiguration.SpawnRate.y);
+                    // setup control data
+                    control = new GarbageSpawnControl() { NextInstanceIn = delay, CurrentTick = elapsedTime };
+                    _garbageControl.Add(entity, control);
+                }
+
+                // limit of garbage instances reached
+                if (control.CurrentGarbageCount >= spawnConfiguration.SpawnLimit)
+                {
+                    continue;
+                }
+
+                // calculate if we are within the time frame to instance
+                var timeSpan = elapsedTime - control.CurrentTick;
+
+                if (timeSpan < control.NextInstanceIn) continue;
+
+                // choose a number of instances to spawn
+                var instanceCount = spawnConfiguration.SpawnCount;
+
+                if (instanceCount + control.CurrentGarbageCount > spawnConfiguration.SpawnLimit)
+                {
+                    instanceCount = spawnConfiguration.SpawnLimit - control.CurrentGarbageCount;
+                }
+
+                // finally instance the garbage prefabs
+                aspect.SpawnGarbage(ref entityCommandBuffer, ref assetReference);
+                // update control tick value
+                control.CurrentTick = elapsedTime;
             }
 
             entityCommandBuffer.Playback(state.EntityManager);

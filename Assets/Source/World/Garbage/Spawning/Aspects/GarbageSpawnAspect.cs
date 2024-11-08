@@ -1,3 +1,4 @@
+using System;
 using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Spacing;
 using Unity.Burst;
@@ -14,12 +15,9 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public readonly Entity entity;
 
         [BurstCompile]
-        public void SpawnGarbage(double elapsedTime, ref EntityCommandBuffer entityCommandBuffer, ref GameAssetReference assetReference)
+        public void SpawnGarbage(ref EntityCommandBuffer entityCommandBuffer, ref GameAssetReference assetReference)
         {
             var spawnConfiguration = garbagePatch.ValueRO.GarbageSpawnerConfiguration;
-
-            if (!garbagePatch.ValueRO.CanSpawn(elapsedTime)) return;
-
             var instancesToSpawn = spawnConfiguration.SpawnCount;
 
             for (var i = 0; i < instancesToSpawn; i++)
@@ -45,10 +43,6 @@ namespace SpaceJunkyard.World.Garbage.Spawning
                 entityCommandBuffer.AddComponent<Parent>(spawn);
                 entityCommandBuffer.SetComponent(spawn, new Parent() { Value = entity });
             }
-
-            garbagePatch.ValueRW.CurrentGarbageCount += instancesToSpawn;
-            // set timer
-            garbagePatch.ValueRW.SpawnCheckTick(elapsedTime);
         }
     }
 }

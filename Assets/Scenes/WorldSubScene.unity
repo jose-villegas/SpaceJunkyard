@@ -1479,8 +1479,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6470979932221166820, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470979932221166820, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnRate.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470979932221166820, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _spawnRate.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470979932221166820, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _spawnCount.x
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6470979932221166820, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _spawnCount.y
