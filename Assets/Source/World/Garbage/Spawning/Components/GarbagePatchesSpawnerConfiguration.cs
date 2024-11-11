@@ -7,7 +7,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     /// <summary>
     /// Describes the garbage spawning behaviour for this entity
     /// </summary>
-    public struct GarbageSpawnerConfiguration : IComponentData
+    public struct GarbagePatchesSpawnerConfiguration : IComponentData
     {
         private int _spawnLimit;
         private float2 _spawnRate;
@@ -32,7 +32,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public readonly int SpawnCount { get => UnityEngine.Random.Range(_spawnCount.x, _spawnCount.y); }
         public readonly Vector2Int SpawnCountValues { get => new(_spawnCount.x, _spawnCount.y); }
 
-        public GarbageSpawnerConfiguration(int spawnLimit, Vector2 spawnRate, Vector2Int spawnCount)
+        public GarbagePatchesSpawnerConfiguration(int spawnLimit, Vector2 spawnRate, Vector2Int spawnCount)
         {
             _spawnLimit = spawnLimit;
             _spawnRate = new float2(spawnRate.x, spawnRate.y);

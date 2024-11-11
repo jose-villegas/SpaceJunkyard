@@ -1,8 +1,8 @@
-using System;
 using SpaceJunkyard.Assets.Spawning;
 using SpaceJunkyard.World.Spacing;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
@@ -17,6 +17,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         [BurstCompile]
         public void SpawnGarbage(ref EntityCommandBuffer entityCommandBuffer, ref GameAssetReference assetReference)
         {
+            var patchSize = garbagePatch.ValueRO.PatchSize;
             var spawnConfiguration = garbagePatch.ValueRO.GarbageSpawnerConfiguration;
             var instancesToSpawn = spawnConfiguration.SpawnCount;
 
@@ -24,20 +25,14 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             {
                 var spawn = entityCommandBuffer.Instantiate(assetReference.GarbagePrefab);
 
-                // add orbit info
-                //var spawnRange = garbageSpawner.SpawnRange;
-                //var spawnPlace = UnityEngine.Random.Range(spawnRange.x, spawnRange.y);
-                //var angle = UnityEngine.Random.Range(0f, (float)(2f * Constants.PI));
+                // create random point within an unit square
+                var point = new float3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f));
+                // normalize to convert to a unit circle
+                point = math.normalize(point) * UnityEngine.Random.Range(-1f, 1f) * patchSize / 2f;
 
-                // add components
-                // var orbiter = new Orbiter(spawnPlace, spawnPlace, angle);
-                //var orbiterPoint = new OrbiterPoint(astronomicalBody.ValueRO);
-                //entityCommandBuffer.AddComponent(spawn, orbiter);
-                //entityCommandBuffer.AddComponent(spawn, orbiterPoint);
-
-                // calculate initial position
-                //var position = localTransform.ValueRO.Position;
-                //entityCommandBuffer.SetComponent(spawn, LocalTransform.FromPositionRotationScale(position, quaternion.identity, 0.2f));
+                // calculate initial 
+                var transform = LocalTransform.FromPosition(point);
+                entityCommandBuffer.SetComponent(spawn, transform);
 
                 // parent the garbage spawn
                 entityCommandBuffer.AddComponent<Parent>(spawn);

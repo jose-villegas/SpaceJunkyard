@@ -14,12 +14,12 @@ namespace SpaceJunkyard.World.Spacing
     /// </summary>
     public partial struct OrbitalPatchInstancingSystem : ISystem
     {
-        private ComponentLookup<GarbageSpawnerConfiguration> _garbageSpawnerLookup;
+        private ComponentLookup<GarbagePatchesSpawnerConfiguration> _garbageSpawnerLookup;
 
         public void OnCreate(ref SystemState state)
         {
             var configuration = SystemAPI.QueryBuilder().WithAll<RequestOrbitableSpacePatches, AstronomicalBody>().Build();
-            _garbageSpawnerLookup = state.GetComponentLookup<GarbageSpawnerConfiguration>(true);
+            _garbageSpawnerLookup = state.GetComponentLookup<GarbagePatchesSpawnerConfiguration>(true);
 
             state.RequireForUpdate(configuration);
         }
@@ -52,7 +52,7 @@ namespace SpaceJunkyard.World.Spacing
             RefRO<AstronomicalBody> body,
             PatchedOrbitableAreaConfiguration garbagePatchConfiguration,
             Entity orbitingBodyEntity,
-            RefRO<GarbageSpawnerConfiguration> garbageSpawnerConfiguration
+            RefRO<GarbagePatchesSpawnerConfiguration> garbageSpawnerConfiguration
         )
         {
             var orbitRadius = garbagePatchConfiguration.CenterHeight;

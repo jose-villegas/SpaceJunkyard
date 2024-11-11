@@ -10,7 +10,7 @@ namespace SpaceJunkyard.World.Spacing
         private double _nextInstanceIn;
 
         /// <summary>
-        /// Current amount of garbage instances, to check against <see cref="GarbageSpawnerConfiguration.SpawnLimit"/>
+        /// Current amount of garbage instances, to check against <see cref="GarbagePatchesSpawnerConfiguration.SpawnLimit"/>
         /// </summary>
         public int CurrentGarbageCount { get => _currentGarbageCount; set => _currentGarbageCount = value; }
 

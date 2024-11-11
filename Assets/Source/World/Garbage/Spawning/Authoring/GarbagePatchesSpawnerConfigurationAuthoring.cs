@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Garbage.Spawning
 {
-    public class GarbageSpawnerConfigurationAuthoring : MonoBehaviour
+    public class GarbagePatchesSpawnerConfigurationAuthoring : MonoBehaviour
     {
         [SerializeField] private int _spawnLimit;
         [SerializeField] private Vector2 _spawnRate;
@@ -13,12 +13,12 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         public Vector2 SpawnRate { get => _spawnRate; }
         public Vector2Int SpawnCount { get => _spawnCount; }
 
-        public class Baker : Baker<GarbageSpawnerConfigurationAuthoring>
+        public class Baker : Baker<GarbagePatchesSpawnerConfigurationAuthoring>
         {
-            public override void Bake(GarbageSpawnerConfigurationAuthoring authoring)
+            public override void Bake(GarbagePatchesSpawnerConfigurationAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new GarbageSpawnerConfiguration(authoring.SpawnLimit, authoring.SpawnRate,
+                AddComponent(entity, new GarbagePatchesSpawnerConfiguration(authoring.SpawnLimit, authoring.SpawnRate,
                     authoring.SpawnCount));
             }
         }
