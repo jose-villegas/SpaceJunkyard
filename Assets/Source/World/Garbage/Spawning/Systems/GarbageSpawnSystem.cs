@@ -23,7 +23,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             _garbageControl = new NativeHashMap<Entity, GarbageSpawnControl>(spawners.CalculateEntityCount(), Allocator.Persistent);
         }
 
-        //[BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
