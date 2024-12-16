@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
-    [UpdateInGroup(typeof(TransformSystemGroup), OrderLast = true)]
+    [UpdateInGroup(typeof(TransformSystemGroup), OrderFirst = true)]
     public partial struct OrbitingSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

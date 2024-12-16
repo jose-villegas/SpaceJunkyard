@@ -14,7 +14,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
         private int2 _spawnCount;
 
         /// <summary>
-        /// Determines the maximun amount of garbage instances
+        /// Determines the maximum amount of garbage instances
         /// </summary>
         /// <value></value>
         public readonly int SpawnLimit { get => _spawnLimit; }

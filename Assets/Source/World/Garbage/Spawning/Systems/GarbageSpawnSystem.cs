@@ -65,7 +65,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
                 }
 
                 // finally instance the garbage prefabs
-                aspect.SpawnGarbage(ref entityCommandBuffer, ref assetReference);
+                aspect.SpawnGarbage(ref entityCommandBuffer, ref assetReference, instanceCount);
                 // update control values
                 control.CurrentTick = elapsedTime;
                 control.CurrentGarbageCount += instanceCount;
