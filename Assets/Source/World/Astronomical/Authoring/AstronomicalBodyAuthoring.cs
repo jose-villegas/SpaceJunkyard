@@ -9,8 +9,8 @@ namespace SpaceJunkyard.World.Astronomical
         [SerializeField] private string _name = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         [SerializeField] private float _mass = 0;
 
-        public string Name { get => _name; }
-        public float Mass { get => _mass; }
+        public string Name => _name;
+        public float Mass => _mass;
 
         public AstronomicalBody CreateComponent()
         {

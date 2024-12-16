@@ -31,7 +31,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         {
             var index = 0;
 
-            if (_orbitableBodies == null || _orbitableBodies.Length == 0)
+            if (_orbitableBodies.Length == 0)
             {
                 _orbitableBodies = CollectionHelper.CreateNativeArray<AstronomicalBody>(_orbitablesQuery.CalculateEntityCount(), Allocator.Persistent);
             }

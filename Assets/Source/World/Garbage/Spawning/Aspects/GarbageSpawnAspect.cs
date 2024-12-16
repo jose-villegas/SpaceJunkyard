@@ -10,14 +10,16 @@ namespace SpaceJunkyard.World.Garbage.Spawning
     [BurstCompile]
     public readonly partial struct GarbageSpawnAspect : IAspect
     {
-        public readonly RefRW<GarbagePatch> garbagePatch;
-        public readonly Entity entity;
+        private readonly RefRW<GarbagePatch> _garbagePatch;
+        private readonly Entity _entity;
+
+        public GarbagePatch Patch => _garbagePatch.ValueRO;
 
         [BurstCompile]
         public void SpawnGarbage(ref EntityCommandBuffer entityCommandBuffer, ref GameAssetReference assetReference, 
             in int instancesToSpawn)
         {
-            var patchSize = garbagePatch.ValueRO.PatchSize;
+            var patchSize = _garbagePatch.ValueRO.PatchSize;
 
             for (var i = 0; i < instancesToSpawn; i++)
             {
@@ -36,7 +38,7 @@ namespace SpaceJunkyard.World.Garbage.Spawning
 
                 // parent the garbage spawn
                 entityCommandBuffer.AddComponent<Parent>(spawn);
-                entityCommandBuffer.SetComponent(spawn, new Parent() { Value = entity });
+                entityCommandBuffer.SetComponent(spawn, new Parent() { Value = _entity });
             }
         }
     }

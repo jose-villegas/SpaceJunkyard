@@ -5,15 +5,15 @@ namespace SpaceJunkyard.World.Spacing
 {
     public struct GarbagePatch : IOrbitalPatch
     {
-        private Entity _orbitableBody;
-        private GarbagePatchesSpawnerConfiguration _garbageSpawnerConfiguration;
-        private float _patchSize;
+        private readonly Entity _orbitableBody;
+        private readonly GarbagePatchesSpawnerConfiguration _garbageSpawnerConfiguration;
+        private readonly float _patchSize;
 
-        public OrbitableAreaType OrbitableAreaType { get => OrbitableAreaType.Gargabe; }
+        public OrbitableAreaType OrbitableAreaType => OrbitableAreaType.Gargabe;
 
         public Entity OrbitableBody => _orbitableBody;
 
-        public GarbagePatchesSpawnerConfiguration GarbageSpawnerConfiguration { get => _garbageSpawnerConfiguration; }
+        public GarbagePatchesSpawnerConfiguration GarbageSpawnerConfiguration => _garbageSpawnerConfiguration;
 
         public float PatchSize => _patchSize;
 

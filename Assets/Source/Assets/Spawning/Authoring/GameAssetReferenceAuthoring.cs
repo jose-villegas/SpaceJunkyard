@@ -8,8 +8,8 @@ namespace SpaceJunkyard.Assets.Spawning
         [SerializeField] private GameObject _garbagePrefab;
         [SerializeField] private GameObject _orbitalPatchPrefab;
 
-        public GameObject GarbagePrefab { get => _garbagePrefab; }
-        public GameObject OrbitalPatchPrefab { get => _orbitalPatchPrefab; }
+        public GameObject GarbagePrefab => _garbagePrefab;
+        public GameObject OrbitalPatchPrefab => _orbitalPatchPrefab;
 
         public class Baker : Baker<GameAssetReferenceAuthoring>
         {

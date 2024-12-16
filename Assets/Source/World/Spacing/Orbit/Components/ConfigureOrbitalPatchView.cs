@@ -5,9 +5,9 @@ namespace SpaceJunkyard.World.Spacing
 {
     public struct ConfigureOrbitalPatchView : IComponentData
     {
-        [SerializeField] private Entity _parent;
+        private Entity _parent;
 
-        public Entity Parent { get => _parent; }
+        public Entity Parent => _parent;
 
         public ConfigureOrbitalPatchView(Entity parent)
         {

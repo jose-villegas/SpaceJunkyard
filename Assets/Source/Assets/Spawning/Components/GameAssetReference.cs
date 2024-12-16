@@ -7,8 +7,8 @@ namespace SpaceJunkyard.Assets.Spawning
     /// </summary>
     public struct GameAssetReference : IComponentData
     {
-        private Entity _garbagePrefab;
-        private Entity _orbitalPatchPrefab;
+        private readonly Entity _garbagePrefab;
+        private readonly Entity _orbitalPatchPrefab;
 
         public GameAssetReference(Entity garbagePrefab, Entity orbitalPatchPrefab)
         {

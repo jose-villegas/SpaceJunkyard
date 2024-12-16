@@ -20,7 +20,8 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             state.RequireAnyForUpdate(configuration, spawners);
 
             // initialize control map
-            _garbageControl = new NativeHashMap<Entity, GarbageSpawnControl>(spawners.CalculateEntityCount(), Allocator.Persistent);
+            _garbageControl =
+                new NativeHashMap<Entity, GarbageSpawnControl>(spawners.CalculateEntityCount(), Allocator.Persistent);
         }
 
         [BurstCompile]
@@ -32,21 +33,21 @@ namespace SpaceJunkyard.World.Garbage.Spawning
 
             foreach ((var aspect, var entity) in SystemAPI.Query<GarbageSpawnAspect>().WithEntityAccess())
             {
-                var garbagePatch = aspect.garbagePatch.ValueRO;
-                var spawnConfiguration = garbagePatch.GarbageSpawnerConfiguration;
+                var garbagePatch = aspect.Patch;
+                var spawnConfig = garbagePatch.GarbageSpawnerConfiguration;
 
                 // if we haven't spawned for this patch, schedule for spawn
                 if (!_garbageControl.TryGetValue(entity, out var control))
                 {
                     // choose random starting delay for frequency
-                    var delay = UnityEngine.Random.Range(spawnConfiguration.SpawnRate.x, spawnConfiguration.SpawnRate.y);
+                    var delay = UnityEngine.Random.Range(spawnConfig.SpawnRate.x, spawnConfig.SpawnRate.y);
                     // setup control data
-                    control = new GarbageSpawnControl() { NextInstanceIn = delay, CurrentTick = elapsedTime };
+                    control = new GarbageSpawnControl() {NextInstanceIn = delay, CurrentTick = elapsedTime};
                     _garbageControl.Add(entity, control);
                 }
 
                 // limit of garbage instances reached
-                if (control.CurrentGarbageCount >= spawnConfiguration.SpawnLimit)
+                if (control.CurrentGarbageCount >= spawnConfig.SpawnLimit)
                 {
                     continue;
                 }
@@ -57,11 +58,11 @@ namespace SpaceJunkyard.World.Garbage.Spawning
                 if (timeSpan < control.NextInstanceIn) continue;
 
                 // choose a number of instances to spawn
-                var instanceCount = spawnConfiguration.SpawnCount;
+                var instanceCount = spawnConfig.SpawnCount;
 
-                if (instanceCount + control.CurrentGarbageCount > spawnConfiguration.SpawnLimit)
+                if (instanceCount + control.CurrentGarbageCount > spawnConfig.SpawnLimit)
                 {
-                    instanceCount = spawnConfiguration.SpawnLimit - control.CurrentGarbageCount;
+                    instanceCount = spawnConfig.SpawnLimit - control.CurrentGarbageCount;
                 }
 
                 // finally instance the garbage prefabs

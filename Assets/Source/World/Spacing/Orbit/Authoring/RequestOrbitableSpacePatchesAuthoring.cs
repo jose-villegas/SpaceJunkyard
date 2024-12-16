@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Spacing
 {
-
     public class RequestOrbitableSpacePatchesAuthoring : MonoBehaviour
     {
         [SerializeField] private GameObject _patchesContainer;
         [SerializeField] private PatchedOrbitableAreaConfiguration[] _configuration;
 
-        public PatchedOrbitableAreaConfiguration[] Configuration { get => _configuration; }
-        public GameObject PatchesContainer { get => _patchesContainer; set => _patchesContainer = value; }
+        public PatchedOrbitableAreaConfiguration[] Configuration => _configuration;
+        public GameObject PatchesContainer => _patchesContainer;
 
         public class Baker : Baker<RequestOrbitableSpacePatchesAuthoring>
         {
