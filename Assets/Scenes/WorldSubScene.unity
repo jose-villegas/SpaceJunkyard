@@ -1779,6 +1779,7 @@ MonoBehaviour:
   - _orbitableAreaType: 1
     _patchCount: 32
     _centerHeight: 15
+    _perPatchOccupation: 5
 --- !u!1001 &1653794682
 PrefabInstance:
   m_ObjectHideFlags: 0

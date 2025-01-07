@@ -34,7 +34,11 @@ namespace SpaceJunkyard.World.Garbage.Spawning
             foreach ((var aspect, var entity) in SystemAPI.Query<GarbageSpawnAspect>().WithEntityAccess())
             {
                 var garbagePatch = aspect.Patch;
-                var spawnConfig = garbagePatch.GarbageSpawnerConfiguration;
+                
+                // check for spawning allowed
+                if (!garbagePatch.IsActive) continue;
+                
+                var spawnConfig = garbagePatch.SpawnConfiguration;
 
                 // if we haven't spawned for this patch, schedule for spawn
                 if (!_garbageControl.TryGetValue(entity, out var control))

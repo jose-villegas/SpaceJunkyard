@@ -18,9 +18,11 @@ namespace SpaceJunkyard.World.Spacing
 
         public void OnCreate(ref SystemState state)
         {
-            var configuration = SystemAPI.QueryBuilder().WithAll<RequestOrbitableSpacePatches, AstronomicalBody>().Build();
+            var configuration = SystemAPI.QueryBuilder().WithAll<RequestOrbitableSpacePatches, AstronomicalBody>()
+                .Build();
             _garbageSpawnerLookup = state.GetComponentLookup<GarbagePatchesSpawnerConfiguration>(true);
 
+            state.RequireForUpdate<GameAssetReference>();
             state.RequireForUpdate(configuration);
         }
 
@@ -30,16 +32,20 @@ namespace SpaceJunkyard.World.Spacing
             _garbageSpawnerLookup.Update(ref state);
             var assetReference = SystemAPI.GetSingleton<GameAssetReference>();
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            
-            foreach ((var request, var body, var entity) in SystemAPI.Query<RefRO<RequestOrbitableSpacePatches>, RefRO<AstronomicalBody>>().WithEntityAccess())
+
+            foreach ((var request, var body, var entity) in SystemAPI
+                         .Query<RefRO<RequestOrbitableSpacePatches>, RefRO<AstronomicalBody>>().WithEntityAccess())
             {
                 var requestRO = request.ValueRO;
 
                 var garbagePatchConfiguration = requestRO.GarbageAreaConfiguration;
-                InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration, entity, _garbageSpawnerLookup.GetRefRO(entity));
+                InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration,
+                    entity, _garbageSpawnerLookup.GetRefRO(entity));
 
                 // remove request
                 entityCommandBuffer.RemoveComponent<RequestOrbitableSpacePatches>(entity);
+                // create data structures for garbage patch activation
+                entityCommandBuffer.AddComponent<RequestGarbagePatchActivatorCheck>(entity);
             }
 
             entityCommandBuffer.Playback(state.EntityManager);
@@ -76,14 +82,17 @@ namespace SpaceJunkyard.World.Spacing
 
                 // calculate initial position
                 var position = orbiter.CalculateCurrentEllipticalPosition(orbiterPoint.Body.GravityCenter);
-                entityCommandBuffer.SetComponent(newPatch, LocalTransform.FromPositionRotationScale(position, quaternion.identity, 1f));
+                entityCommandBuffer.SetComponent(newPatch,
+                    LocalTransform.FromPositionRotationScale(position, quaternion.identity, 1f));
 
                 // add parent
                 entityCommandBuffer.AddComponent<Parent>(newPatch);
-                entityCommandBuffer.SetComponent(newPatch, new Parent() { Value =  garbagePatchConfiguration.Container});
+                entityCommandBuffer.SetComponent(newPatch, new Parent() {Value = garbagePatchConfiguration.Container});
 
                 // identify as orbital patch entity
-                entityCommandBuffer.AddComponent(newPatch, new GarbagePatch(orbitingBodyEntity, garbageSpawnerConfiguration.ValueRO, patchSize));
+                entityCommandBuffer.AddComponent(newPatch,
+                    new GarbagePatch(orbitingBodyEntity, garbageSpawnerConfiguration.ValueRO, garbagePatchConfiguration,
+                        patchSize, i));
             }
         }
     }
