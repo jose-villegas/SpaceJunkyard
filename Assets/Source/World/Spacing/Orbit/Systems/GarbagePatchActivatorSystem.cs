@@ -49,45 +49,51 @@ namespace SpaceJunkyard.World.Spacing
 
             foreach (var pair in _patchesControl)
             {
-                var freeSpaces = new NativeList<NativeList<int>>(1, Allocator.Temp);
-                PatchedOrbitableAreaConfiguration patchedOrbitConfig;
+                var freeSpaces = CreateFreeSpacesCollection(ref pair.Value);
+            }
 
-                for (var index = 0; index < pair.Value.Length; index++)
+            RemoveRequest(ref state);
+        }
+
+        private NativeList<NativeList<int>> CreateFreeSpacesCollection(ref NativeArray<RefRW<GarbagePatch>> patches)
+        {
+            var freeSpaces = new NativeList<NativeList<int>>(1, Allocator.Temp);
+            
+            for (var index = 0; index < patches.Length; index++)
+            {
+                var currentPatch = patches[index].ValueRO;
+                var config = currentPatch.PatchedOrbitConfiguration;
+
+                // register first free space entry
+                if (!currentPatch.IsOccupied)
                 {
-                    var currentPatch = pair.Value[index].ValueRO;
-                    patchedOrbitConfig = currentPatch.PatchedOrbitConfiguration;
-
-                    // register first free space entry
-                    if (!currentPatch.IsOccupied)
+                    if (freeSpaces.Length == 0)
                     {
-                        if (freeSpaces.Length == 0)
-                        {
-                            freeSpaces.Add(new NativeList<int>(patchedOrbitConfig.PatchCount, Allocator.Temp));
-                            freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
-                        }
-                        else
-                        {
-                            // get last collection of free spaces
-                            var lastFreeSpace = freeSpaces[freeSpaces.Length - 1];
-                            // check if we are next to this index
-                            var previousIndex = lastFreeSpace[lastFreeSpace.Length - 1];
+                        freeSpaces.Add(new NativeList<int>(config.PatchCount, Allocator.Temp));
+                        freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
+                    }
+                    else
+                    {
+                        // get last collection of free spaces
+                        var lastFreeSpace = freeSpaces[freeSpaces.Length - 1];
+                        // check if we are next to this index
+                        var previousIndex = lastFreeSpace[lastFreeSpace.Length - 1];
                             
-                            // we are next to each other, add our index
-                            if (currentPatch.PatchIndex - previousIndex == 1)
-                            {
-                                lastFreeSpace.Add(currentPatch.PatchIndex);
-                            }
-                            else // we need to create a new collection of contiguity
-                            {
-                                freeSpaces.Add(new NativeList<int>(patchedOrbitConfig.PatchCount, Allocator.Temp));
-                                freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
-                            }
+                        // we are next to each other, add our index
+                        if (currentPatch.PatchIndex - previousIndex == 1)
+                        {
+                            lastFreeSpace.Add(currentPatch.PatchIndex);
+                        }
+                        else // we need to create a new collection of contiguity
+                        {
+                            freeSpaces.Add(new NativeList<int>(config.PatchCount, Allocator.Temp));
+                            freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
                         }
                     }
                 }
             }
-
-            RemoveRequest(ref state);
+            
+            return freeSpaces;
         }
 
         private void RemoveRequest(ref SystemState state)
