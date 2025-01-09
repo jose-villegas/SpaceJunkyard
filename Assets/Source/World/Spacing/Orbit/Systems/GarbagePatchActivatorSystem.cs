@@ -1,4 +1,5 @@
-﻿using SpaceJunkyard.World.Astronomical;
+﻿using System.IO;
+using SpaceJunkyard.World.Astronomical;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -49,27 +50,78 @@ namespace SpaceJunkyard.World.Spacing
 
             foreach (var pair in _patchesControl)
             {
-                var freeSpaces = CreateFreeSpacesCollection(ref pair.Value);
+                if (pair.Value.Length == 0) continue;
+
+                var configuration = pair.Value[0].ValueRO.PatchedOrbitConfiguration;
+                var freeSpaces = CreateFreeSpacesCollection(ref pair.Value, configuration.PatchCount);
+
+                // activate patches within contiguous spaces
+                ActivateGarbagePatchesSpacing(ref freeSpaces, configuration.PerPatchOccupation, ref pair.Value);
             }
 
             RemoveRequest(ref state);
         }
 
-        private NativeList<NativeList<int>> CreateFreeSpacesCollection(ref NativeArray<RefRW<GarbagePatch>> patches)
+        private void ActivateGarbagePatchesSpacing(ref NativeList<NativeList<int>> freeSpaces, int perPatchOccupation,
+            ref NativeArray<RefRW<GarbagePatch>> garbagePatches)
+        {
+            foreach (var freeSpace in freeSpaces)
+            {
+                // no spaces
+                if (freeSpace.Length == 0) continue;
+
+                // available space isn't enough
+                if (freeSpace.Length < perPatchOccupation) continue;
+
+                // how many activations can fit within this section
+                var possibleActivations = freeSpace.Length / perPatchOccupation;
+                    
+                // select a random number of activations
+                var activations = UnityEngine.Random.Range(1, possibleActivations + 1);
+                var emptySlots = freeSpace.Length - (activations * perPatchOccupation);
+                var shiftIndex = 0;
+
+                for (int j = 0; j < activations && shiftIndex < freeSpace.Length; j++)
+                {
+                    if (emptySlots > 0)
+                    {
+                        shiftIndex += UnityEngine.Random.Range(0, emptySlots);
+                        emptySlots -= shiftIndex;
+                    }
+                        
+                    // index to activate
+                    var patchIndex = freeSpace[shiftIndex];
+                    var patch = garbagePatches[patchIndex];
+                        
+                    // set origin  as active and the rest as occupied
+                    patch.ValueRW.IsActive = true;
+
+                    for (int k = 0; k < perPatchOccupation; k++)
+                    {
+                        garbagePatches[patchIndex + k].ValueRW.IsOccupied = true;
+                    }
+                        
+                    // move index forward
+                    shiftIndex += perPatchOccupation;
+                }
+            }
+        }
+
+        private NativeList<NativeList<int>> CreateFreeSpacesCollection(ref NativeArray<RefRW<GarbagePatch>> patches,
+            int patchCount)
         {
             var freeSpaces = new NativeList<NativeList<int>>(1, Allocator.Temp);
-            
+
             for (var index = 0; index < patches.Length; index++)
             {
                 var currentPatch = patches[index].ValueRO;
-                var config = currentPatch.PatchedOrbitConfiguration;
 
                 // register first free space entry
                 if (!currentPatch.IsOccupied)
                 {
                     if (freeSpaces.Length == 0)
                     {
-                        freeSpaces.Add(new NativeList<int>(config.PatchCount, Allocator.Temp));
+                        freeSpaces.Add(new NativeList<int>(patchCount, Allocator.Temp));
                         freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
                     }
                     else
@@ -78,7 +130,7 @@ namespace SpaceJunkyard.World.Spacing
                         var lastFreeSpace = freeSpaces[freeSpaces.Length - 1];
                         // check if we are next to this index
                         var previousIndex = lastFreeSpace[lastFreeSpace.Length - 1];
-                            
+
                         // we are next to each other, add our index
                         if (currentPatch.PatchIndex - previousIndex == 1)
                         {
@@ -86,13 +138,13 @@ namespace SpaceJunkyard.World.Spacing
                         }
                         else // we need to create a new collection of contiguity
                         {
-                            freeSpaces.Add(new NativeList<int>(config.PatchCount, Allocator.Temp));
+                            freeSpaces.Add(new NativeList<int>(patchCount, Allocator.Temp));
                             freeSpaces[freeSpaces.Length - 1].Add(currentPatch.PatchIndex);
                         }
                     }
                 }
             }
-            
+
             return freeSpaces;
         }
 
