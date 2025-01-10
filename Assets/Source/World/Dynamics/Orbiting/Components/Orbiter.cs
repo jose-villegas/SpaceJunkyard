@@ -9,43 +9,44 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
     /// </summary>
     public struct Orbiter : IComponentData
     {
-        private float _radius;
-        private float _initialAngle;
-        private float _currentAngle;
-        private float _currentTime;
+        private double _radius;
+        private double _initialAngle;
+        private double _currentAngle;
+        private double _currentTime;
 
-        public Orbiter(float radius, float angle = 0)
+        public Orbiter(double radius, double angle = 0)
         {
             _initialAngle = _currentAngle = angle;
             _radius = radius;
             _currentTime = 0;
         }
 
-        public float CurrentAngle
+        public double CurrentAngle
         {
             get => _currentAngle;
-            set => _currentAngle = (value % (2f * Constants.FloatPI));
+            set => _currentAngle = (value % (2f * Constants.PI));
         }
 
-        public float Radius => _radius;
+        public double Radius => _radius;
 
-        public float Time => _currentTime;
+        public double Time => _currentTime;
 
         public readonly float3 CalculateCurrentEllipticalPosition(float3 center)
         {
-            return new float3(center.x + _radius * math.sin(_currentAngle), 0,
-                center.z + _radius * math.cos(_currentAngle));
+            return new float3((float)(center.x + _radius * math.sin(_currentAngle)), 0,
+                (float)(center.z + _radius * math.cos(_currentAngle)));
         }
 
-        public float3 UpdateAngle(float3 center, float mass, float deltaTime)
+        public float3 UpdateAngle(float3 center, double mass, float deltaTime)
         {
-            var speed = math.sqrt(Constants.GRAV * mass / _radius);
-            // derivative of speed
-            var period = (float)((2 * Constants.PI * _radius) / speed);
+            deltaTime *= GameDynamics.TIME_MULTIPLIER;
+            var radiusAU = _radius * Constants.GAME_AU_UNIT;
+            // reduction of period formula from kepler's third law using AU as distance
+            var period = math.sqrt(math.pow(radiusAU, 3f) / mass);
             // cap period of orbit using mod operator
             _currentTime = (_currentTime + deltaTime) % period;
             // linear interpolation for the angle
-            CurrentAngle = _initialAngle + math.lerp(0f, 2f * Constants.FloatPI, _currentTime / period);
+            CurrentAngle = _initialAngle + math.lerp(0f, 2f * Constants.PI, _currentTime / period);
 
             return CalculateCurrentEllipticalPosition(center);
         }

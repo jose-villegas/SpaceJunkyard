@@ -8,6 +8,6 @@ namespace SpaceJunkyard
         public const double GRAV = 6.6720e-08;
 
         public const double PI = Math.PI;
-        public const float FloatPI = (float)Math.PI;
+        public const double GAME_AU_UNIT = 149.5978707;
     }
 }
