@@ -75,7 +75,7 @@ namespace SpaceJunkyard.World.Spacing
                 var newPatch = entityCommandBuffer.Instantiate(assetReference.OrbitalPatchPrefab);
 
                 // add orbiting properties
-                var orbiter = new Orbiter(orbitRadius, orbitRadius, angleSeparation * i);
+                var orbiter = new Orbiter(orbitRadius, angleSeparation * i);
                 var orbiterPoint = new OrbiterPoint(body.ValueRO);
                 entityCommandBuffer.AddComponent(newPatch, orbiter);
                 entityCommandBuffer.AddComponent(newPatch, orbiterPoint);

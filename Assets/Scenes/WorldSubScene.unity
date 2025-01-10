@@ -482,6 +482,10 @@ PrefabInstance:
       value: 846
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 846
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 674
       objectReference: {fileID: 0}
@@ -734,6 +738,10 @@ PrefabInstance:
       value: 80.6
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 80.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 80
       objectReference: {fileID: 0}
@@ -894,6 +902,10 @@ PrefabInstance:
       objectReference: {fileID: 591490051}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _apogee
+      value: 9.51758
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
       value: 9.51758
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
@@ -1061,6 +1073,10 @@ PrefabInstance:
       value: 64.23
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 64.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 64.2
       objectReference: {fileID: 0}
@@ -1225,6 +1241,10 @@ PrefabInstance:
       objectReference: {fileID: 364707070}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _apogee
+      value: 485.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
       value: 485.76
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
@@ -1460,6 +1480,10 @@ PrefabInstance:
       value: 93.6
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 93.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 93.9
       objectReference: {fileID: 0}
@@ -1542,8 +1566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 1616912166}
-  _apogee: 10
-  _perigee: 10
+  _radius: 12
   _initialAngle: 0
 --- !u!4 &1589641882 stripped
 Transform:
@@ -1728,6 +1751,10 @@ PrefabInstance:
       objectReference: {fileID: 364707070}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _apogee
+      value: 658
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
       value: 658
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
@@ -1937,6 +1964,10 @@ PrefabInstance:
       value: 1088
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 1088
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 986.6667
       objectReference: {fileID: 0}
@@ -2110,6 +2141,10 @@ PrefabInstance:
       value: 40.5
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 40.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 36.2
       objectReference: {fileID: 0}
@@ -2273,6 +2308,10 @@ PrefabInstance:
       objectReference: {fileID: 591490051}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _apogee
+      value: 23.4709
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
       value: 23.4709
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
@@ -2550,6 +2589,10 @@ PrefabInstance:
       value: 71.76
       objectReference: {fileID: 0}
     - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 71.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
       propertyPath: _perigee
       value: 71.64
       objectReference: {fileID: 0}
@@ -2802,6 +2845,10 @@ PrefabInstance:
       propertyPath: _body
       value: 
       objectReference: {fileID: 364707070}
+    - target: {fileID: 8397739340745192879, guid: 51fc2409d82fe9e4cbc061a3c6df3360, type: 3}
+      propertyPath: _radius
+      value: 429.28
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
