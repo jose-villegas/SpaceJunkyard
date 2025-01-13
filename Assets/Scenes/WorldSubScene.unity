@@ -1566,7 +1566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 1616912166}
-  _radius: 12
+  _radius: 10
   _initialAngle: 0
 --- !u!4 &1589641882 stripped
 Transform:

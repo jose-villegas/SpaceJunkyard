@@ -25,7 +25,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             // schedule orbiters
             var orbitingJob = new OrbitingJob()
             {
-                deltaTime = SystemAPI.Time.DeltaTime,
+                deltaTime = SystemAPI.Time.DeltaTime * GameDynamics.TimeMultiplier.Data,
             };
             orbitingJob.ScheduleParallel();
         }

@@ -39,7 +39,6 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
 
         public float3 UpdateAngle(float3 center, double mass, float deltaTime)
         {
-            deltaTime *= GameDynamics.TIME_MULTIPLIER;
             var radiusAU = _radius * Constants.GAME_AU_UNIT;
             // reduction of period formula from kepler's third law using AU as distance
             var period = math.sqrt(math.pow(radiusAU, 3f) / mass);
