@@ -43,7 +43,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             // cap period of orbit using mod operator
             _currentTime = (_currentTime + deltaTime) % period;
             // linear interpolation for the angle
-            CurrentAngle = _initialAngle + math.lerp(0f, 2f * Constants.PI, _currentTime / period);
+            CurrentAngle = _initialAngle + math.lerp(0.0, 2.0 * Constants.PI, _currentTime / period);
 
             return CalculateCurrentEllipticalPosition(center);
         }
