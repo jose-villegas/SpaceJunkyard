@@ -10,19 +10,18 @@ namespace SpaceJunkyard.World.Astronomical
     /// </summary>
     public struct AstronomicalBody : IComponentData
     {
-        private FixedString32Bytes _name;
-        private float _mass;
         private float3 _gravityCenter;
 
         public AstronomicalBody(FixedString32Bytes name, float mass, Vector3 gravityCenter)
         {
-            _name = name;
-            _mass = mass;
+            Name = name;
+            Mass = mass;
             _gravityCenter = gravityCenter;
         }
 
-        public FixedString32Bytes Name { get => _name; }
-        public float Mass { get => _mass; set => _mass = value; }
+        public FixedString32Bytes Name { get; }
+        public float Mass { get; }
+
         public Vector3 GravityCenter { get => _gravityCenter; set => _gravityCenter = value; }
     }
 }

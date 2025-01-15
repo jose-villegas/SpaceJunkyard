@@ -1,5 +1,6 @@
 using SpaceJunkyard.World.Astronomical;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace SpaceJunkyard.World.Dynamics.Orbiting
 {
@@ -15,6 +16,11 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             _body = body;
         }
 
-        public AstronomicalBody Body { get => _body; set => _body = value; }
+        public AstronomicalBody Body { get => _body; }
+
+        public void ModifyCenter(float3 position)
+        {
+            _body.GravityCenter = position;
+        }
     }
 }

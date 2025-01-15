@@ -41,7 +41,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
         {
             var radiusAU = _radius * Constants.GAME_AU_UNIT;
             // reduction of period formula from kepler's third law using AU as distance
-            var period = math.sqrt(math.pow(radiusAU, 3f) / mass);
+            var period = math.sqrt(math.pow(radiusAU, 3) / mass);
             // cap period of orbit using mod operator
             _currentTime = (_currentTime + deltaTime) % period;
             // linear interpolation for the angle

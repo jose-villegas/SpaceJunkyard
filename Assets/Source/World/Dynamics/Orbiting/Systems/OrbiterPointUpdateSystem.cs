@@ -77,8 +77,7 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
                 {
                     if (orbitable.Name == bodyName)
                     {
-                        orbiterPoint.Body = orbitable;
-                        break;
+                        orbiterPoint.ModifyCenter(orbitable.GravityCenter);
                     }
                 }
             }
