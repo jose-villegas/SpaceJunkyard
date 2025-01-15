@@ -39,15 +39,20 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
 
         public float3 UpdateAngle(float3 center, double mass, float deltaTime)
         {
-            var radiusAU = _radius * Constants.GAME_AU_UNIT;
-            // reduction of period formula from kepler's third law using AU as distance
-            var period = math.sqrt(math.pow(radiusAU, 3) / mass);
+            var period = Period(mass);
             // cap period of orbit using mod operator
             _currentTime = (_currentTime + deltaTime) % period;
             // linear interpolation for the angle
             CurrentAngle = _initialAngle + math.lerp(0f, 2f * Constants.PI, _currentTime / period);
 
             return CalculateCurrentEllipticalPosition(center);
+        }
+
+        public readonly double Period(double mass)
+        {
+            var radiusAU = _radius * Constants.GAME_AU_UNIT;
+            // reduction of period formula from kepler's third law using AU as distance
+            return math.sqrt(math.pow(radiusAU, 3) / mass);
         }
     }
 }
