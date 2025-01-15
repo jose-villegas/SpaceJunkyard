@@ -33,8 +33,8 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
 
         public readonly float3 CalculateCurrentEllipticalPosition(float3 center)
         {
-            return new float3((float)(center.x + _radius * math.sin(_currentAngle)), 0,
-                (float)(center.z + _radius * math.cos(_currentAngle)));
+            return new float3((float) (center.x + _radius * math.sin(_currentAngle)), 0,
+                (float) (center.z + _radius * math.cos(_currentAngle)));
         }
 
         public float3 UpdateAngle(float3 center, double mass, float deltaTime)
@@ -53,6 +53,13 @@ namespace SpaceJunkyard.World.Dynamics.Orbiting
             var radiusAU = _radius * Constants.GAME_AU_UNIT;
             // reduction of period formula from kepler's third law using AU as distance
             return math.sqrt(math.pow(radiusAU, 3) / mass);
+        }
+
+        public readonly double TimeForAngle(double mass, double angle = 0)
+        {
+            var period = Period(mass);
+            var t = angle / (2.0 * Constants.PI);
+            return t * period;
         }
     }
 }
