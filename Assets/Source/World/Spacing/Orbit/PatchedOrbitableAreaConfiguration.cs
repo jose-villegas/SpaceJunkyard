@@ -9,9 +9,9 @@ namespace SpaceJunkyard.World.Spacing
     /// Spacing configuration for creation of orbitable patches
     /// </summary>
     [Serializable]
-    public struct PatchedOrbitableAreaConfiguration
+    public struct PatchedOrbitableAreaConfiguration : IBufferElementData
     {
-        [SerializeField] private Entity _container;
+        Entity _container;
         [SerializeField] private OrbitableAreaType _orbitableAreaType;
         
         /// <summary>
@@ -29,7 +29,7 @@ namespace SpaceJunkyard.World.Spacing
         /// </summary>
         [SerializeField, HideIf(nameof(OrbitableAreaType), OrbitableAreaType.Disabled), AllowNesting] private int _perPatchOccupation;
 
-        public OrbitableAreaType OrbitableAreaType { get => _orbitableAreaType; }
+        public OrbitableAreaType OrbitableAreaType { get => _orbitableAreaType; set => _orbitableAreaType = value; }
         public int PatchCount { get => _patchCount; }
         public float CenterHeight { get => _centerHeight; }
         public Entity Container { get => _container; set => _container = value; }

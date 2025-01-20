@@ -18,8 +18,7 @@ namespace SpaceJunkyard.World.Spacing
 
         public void OnCreate(ref SystemState state)
         {
-            var configuration = SystemAPI.QueryBuilder().WithAll<RequestOrbitableSpacePatches, AstronomicalBody>()
-                .Build();
+            var configuration = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, PatchedOrbitableAreaConfiguration>().Build();
             _garbageSpawnerLookup = state.GetComponentLookup<GarbagePatchesSpawnerConfiguration>(true);
 
             state.RequireForUpdate<GameAssetReference>();
@@ -34,16 +33,21 @@ namespace SpaceJunkyard.World.Spacing
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
 
             foreach ((var request, var body, var entity) in SystemAPI
-                         .Query<RefRO<RequestOrbitableSpacePatches>, RefRO<AstronomicalBody>>().WithEntityAccess())
+                         .Query<DynamicBuffer<PatchedOrbitableAreaConfiguration>, RefRO<AstronomicalBody>>().WithEntityAccess())
             {
-                var requestRO = request.ValueRO;
+                for (int i = 0; i < request.Length; i++)
+                {
+                    var entry = request[i];
 
-                var garbagePatchConfiguration = requestRO.GarbageAreaConfiguration;
-                InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, garbagePatchConfiguration,
-                    entity, _garbageSpawnerLookup.GetRefRO(entity));
+                    if (entry.OrbitableAreaType == OrbitableAreaType.Gargabe)
+                    {
+                        InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body,
+                            entry, entity, _garbageSpawnerLookup.GetRefRO(entity));
+                    }
+                }
 
                 // remove request
-                entityCommandBuffer.RemoveComponent<RequestOrbitableSpacePatches>(entity);
+                entityCommandBuffer.RemoveComponent<PatchedOrbitableAreaConfiguration>(entity);
                 // create data structures for garbage patch activation
                 entityCommandBuffer.AddComponent<RequestGarbagePatchActivatorCheck>(entity);
             }
@@ -87,7 +91,7 @@ namespace SpaceJunkyard.World.Spacing
 
                 // add parent
                 entityCommandBuffer.AddComponent<Parent>(newPatch);
-                entityCommandBuffer.SetComponent(newPatch, new Parent() {Value = garbagePatchConfiguration.Container});
+                entityCommandBuffer.SetComponent(newPatch, new Parent {Value = garbagePatchConfiguration.Container});
 
                 // identify as orbital patch entity
                 entityCommandBuffer.AddComponent(newPatch,

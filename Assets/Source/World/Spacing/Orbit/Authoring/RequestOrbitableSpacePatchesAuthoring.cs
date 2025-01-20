@@ -21,15 +21,15 @@ namespace SpaceJunkyard.World.Spacing
                 // verify we actually posses any configurations
                 if (authoring.Configuration == null || authoring.Configuration.Length == 0) return;
 
-                // check if we have a garbage configuration
-                var gConfig = authoring.Configuration.FirstOrDefault(x => x.OrbitableAreaType == OrbitableAreaType.Gargabe);
-                var cConfig = authoring.Configuration.FirstOrDefault(x => x.OrbitableAreaType == OrbitableAreaType.Construction);
-
+                // pass over buffer of patch requests
+                var buffer = AddBuffer<PatchedOrbitableAreaConfiguration>(entity);
                 var containerE = GetEntity(authoring.PatchesContainer, TransformUsageFlags.Dynamic);
-                gConfig.Container = containerE;
-                cConfig.Container = containerE;
 
-                AddComponent(entity, new RequestOrbitableSpacePatches(gConfig, cConfig));
+                for (var i = 0; i < authoring.Configuration.Length; i++)
+                {
+                    authoring.Configuration[i].Container = containerE;
+                    buffer.Add(authoring.Configuration[i]);
+                }
             }
         }
     }
