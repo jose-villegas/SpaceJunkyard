@@ -16,11 +16,13 @@ namespace SpaceJunkyard.World.Astronomical
         {
             return new AstronomicalBody(Name, Mass, transform.position);
         }
-
+        
         private class Baker : Baker<AstronomicalBodyAuthoring>
         {
             public override void Bake(AstronomicalBodyAuthoring authoring)
             {
+                authoring.gameObject.name = authoring.Name;
+                
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, authoring.CreateComponent());
             }

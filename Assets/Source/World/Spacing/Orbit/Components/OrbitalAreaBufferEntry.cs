@@ -1,19 +1,24 @@
-﻿using SpaceJunkyard.General.Interfaces;
-using SpaceJunkyard.Tools.Camera;
+﻿using System;
+using SpaceJunkyard.General.Interfaces;
 using Unity.Entities;
+using UnityEngine;
 
 namespace SpaceJunkyard.World.Spacing
 {
+    [Serializable]
     public struct OrbitalAreaBufferEntry : IEntityBufferElement
     {
+        [SerializeField] private readonly Entity _entity;
+        [SerializeField] private readonly OrbitableAreaType _areaType;
+
         public OrbitalAreaBufferEntry(OrbitableAreaType areaType, Entity entity)
         {
-            AreaType = areaType;
-            Entity = entity;
+            _areaType = areaType;
+            _entity = entity;
         }
 
-        public Entity Entity { get; }
+        public readonly Entity Entity => _entity;
 
-        public OrbitableAreaType AreaType { get; }
+        public readonly OrbitableAreaType AreaType => _areaType;
     }
 }

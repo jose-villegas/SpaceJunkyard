@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SpaceJunkyard.World.Spacing
 {
-    public class RequestOrbitableSpacePatchesAuthoring : MonoBehaviour
+    public class RequestOrbitableSpaceAuthoring : MonoBehaviour
     {
         [SerializeField] private GameObject _patchesContainer;
         [SerializeField] private PatchedOrbitAreaConfigurationEntry[] _configuration;
@@ -11,13 +11,13 @@ namespace SpaceJunkyard.World.Spacing
         public PatchedOrbitAreaConfigurationEntry[] Configuration => _configuration;
         public GameObject PatchesContainer => _patchesContainer;
 
-        public class Baker : Baker<RequestOrbitableSpacePatchesAuthoring>
+        public class Baker : Baker<RequestOrbitableSpaceAuthoring>
         {
-            public override void Bake(RequestOrbitableSpacePatchesAuthoring authoring)
+            public override void Bake(RequestOrbitableSpaceAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
-                // verify we actually posses any configurations
+                // verify we actually possess any configurations
                 if (authoring.Configuration == null || authoring.Configuration.Length == 0) return;
 
                 // pass over buffer of patch requests
@@ -29,6 +29,9 @@ namespace SpaceJunkyard.World.Spacing
                     authoring.Configuration[i].Container = containerE;
                     buffer.Add(authoring.Configuration[i]);
                 }
+                
+                // add buffer to contained orbital spacing entities
+                AddBuffer<OrbitalAreaBufferEntry>(entity);
             }
         }
     }

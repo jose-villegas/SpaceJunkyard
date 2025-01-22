@@ -5,7 +5,7 @@ using Unity.Transforms;
 namespace SpaceJunkyard.World.Spacing
 {
     /// <summary>
-    /// Orbital patches spawn barebones this system takes 
+    /// Orbital patches spawn barebones, this system takes 
     /// cares of properly setting values for the intended view
     /// </summary>
     public partial struct OrbitalPatchViewSystem : ISystem

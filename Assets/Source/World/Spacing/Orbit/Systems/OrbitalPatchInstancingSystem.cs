@@ -100,8 +100,7 @@ namespace SpaceJunkyard.World.Spacing
                 entityCommandBuffer.AddBuffer<GarbageInstanceEntry>(newPatch);
                 
                 // save reference to the astronomical body
-                var buffer = entityCommandBuffer.AddBuffer<OrbitalAreaBufferEntry>(bodyEntity);
-                buffer.Add(new OrbitalAreaBufferEntry(OrbitableAreaType.Gargabe, newPatch));
+                entityCommandBuffer.AppendToBuffer(bodyEntity, new OrbitalAreaBufferEntry(OrbitableAreaType.Gargabe, newPatch));
             }
         }
     }
