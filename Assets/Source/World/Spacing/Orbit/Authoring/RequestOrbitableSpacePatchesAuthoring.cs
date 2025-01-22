@@ -1,4 +1,3 @@
-using System.Linq;
 using Unity.Entities;
 using UnityEngine;
 
@@ -7,9 +6,9 @@ namespace SpaceJunkyard.World.Spacing
     public class RequestOrbitableSpacePatchesAuthoring : MonoBehaviour
     {
         [SerializeField] private GameObject _patchesContainer;
-        [SerializeField] private PatchedOrbitableAreaConfiguration[] _configuration;
+        [SerializeField] private PatchedOrbitAreaConfigurationEntry[] _configuration;
 
-        public PatchedOrbitableAreaConfiguration[] Configuration => _configuration;
+        public PatchedOrbitAreaConfigurationEntry[] Configuration => _configuration;
         public GameObject PatchesContainer => _patchesContainer;
 
         public class Baker : Baker<RequestOrbitableSpacePatchesAuthoring>
@@ -22,7 +21,7 @@ namespace SpaceJunkyard.World.Spacing
                 if (authoring.Configuration == null || authoring.Configuration.Length == 0) return;
 
                 // pass over buffer of patch requests
-                var buffer = AddBuffer<PatchedOrbitableAreaConfiguration>(entity);
+                var buffer = AddBuffer<PatchedOrbitAreaConfigurationEntry>(entity);
                 var containerE = GetEntity(authoring.PatchesContainer, TransformUsageFlags.Dynamic);
 
                 for (var i = 0; i < authoring.Configuration.Length; i++)

@@ -18,7 +18,7 @@ namespace SpaceJunkyard.World.Spacing
 
         public void OnCreate(ref SystemState state)
         {
-            var configuration = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, PatchedOrbitableAreaConfiguration>().Build();
+            var configuration = SystemAPI.QueryBuilder().WithAll<AstronomicalBody, PatchedOrbitAreaConfigurationEntry>().Build();
             _garbageSpawnerLookup = state.GetComponentLookup<GarbagePatchesSpawnerConfiguration>(true);
 
             state.RequireForUpdate<GameAssetReference>();
@@ -33,7 +33,7 @@ namespace SpaceJunkyard.World.Spacing
             var entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
 
             foreach ((var request, var body, var entity) in SystemAPI
-                         .Query<DynamicBuffer<PatchedOrbitableAreaConfiguration>, RefRO<AstronomicalBody>>().WithEntityAccess())
+                         .Query<DynamicBuffer<PatchedOrbitAreaConfigurationEntry>, RefRO<AstronomicalBody>>().WithEntityAccess())
             {
                 for (int i = 0; i < request.Length; i++)
                 {
@@ -41,13 +41,13 @@ namespace SpaceJunkyard.World.Spacing
 
                     if (entry.OrbitableAreaType == OrbitableAreaType.Gargabe)
                     {
-                        InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body,
-                            entry, entity, _garbageSpawnerLookup.GetRefRO(entity));
+                        InstanceGarbagePatches(ref assetReference, ref entityCommandBuffer, body, entity,
+                            entry, _garbageSpawnerLookup.GetRefRO(entity));
                     }
                 }
 
                 // remove request
-                entityCommandBuffer.RemoveComponent<PatchedOrbitableAreaConfiguration>(entity);
+                entityCommandBuffer.RemoveComponent<PatchedOrbitAreaConfigurationEntry>(entity);
                 // create data structures for garbage patch activation
                 entityCommandBuffer.AddComponent<RequestGarbagePatchActivatorCheck>(entity);
             }
@@ -60,20 +60,20 @@ namespace SpaceJunkyard.World.Spacing
             ref GameAssetReference assetReference,
             ref EntityCommandBuffer entityCommandBuffer,
             RefRO<AstronomicalBody> body,
-            PatchedOrbitableAreaConfiguration garbagePatchConfiguration,
-            Entity orbitingBodyEntity,
-            RefRO<GarbagePatchesSpawnerConfiguration> garbageSpawnerConfiguration
+            Entity bodyEntity,
+            PatchedOrbitAreaConfigurationEntry patchConfigurationEntry,
+            RefRO<GarbagePatchesSpawnerConfiguration> spawnerConfiguration
         )
         {
-            var orbitRadius = garbagePatchConfiguration.CenterHeight;
+            var orbitRadius = patchConfigurationEntry.CenterHeight;
             var orbitDiameter = 2f * orbitRadius;
 
             // calculate each patch radius
-            var patchSize = math.PI * (orbitDiameter / garbagePatchConfiguration.PatchCount);
-            var angleSeparation = math.PI2 / garbagePatchConfiguration.PatchCount;
+            var patchSize = math.PI * (orbitDiameter / patchConfigurationEntry.PatchCount);
+            var angleSeparation = math.PI2 / patchConfigurationEntry.PatchCount;
 
             // create garbage patches circling the center height orbit
-            for (var i = 0; i < garbagePatchConfiguration.PatchCount; i++)
+            for (var i = 0; i < patchConfigurationEntry.PatchCount; i++)
             {
                 // cycle unit circle coordinates
                 var newPatch = entityCommandBuffer.Instantiate(assetReference.OrbitalPatchPrefab);
@@ -91,12 +91,17 @@ namespace SpaceJunkyard.World.Spacing
 
                 // add parent
                 entityCommandBuffer.AddComponent<Parent>(newPatch);
-                entityCommandBuffer.SetComponent(newPatch, new Parent {Value = garbagePatchConfiguration.Container});
+                entityCommandBuffer.SetComponent(newPatch, new Parent {Value = patchConfigurationEntry.Container});
 
                 // identify as orbital patch entity
                 entityCommandBuffer.AddComponent(newPatch,
-                    new GarbagePatch(orbitingBodyEntity, garbageSpawnerConfiguration.ValueRO, garbagePatchConfiguration,
+                    new GarbagePatch(bodyEntity, spawnerConfiguration.ValueRO, patchConfigurationEntry,
                         patchSize, i));
+                entityCommandBuffer.AddBuffer<GarbageInstanceEntry>(newPatch);
+                
+                // save reference to the astronomical body
+                var buffer = entityCommandBuffer.AddBuffer<OrbitalAreaBufferEntry>(bodyEntity);
+                buffer.Add(new OrbitalAreaBufferEntry(OrbitableAreaType.Gargabe, newPatch));
             }
         }
     }

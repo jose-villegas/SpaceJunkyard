@@ -1804,8 +1804,8 @@ MonoBehaviour:
   _patchesContainer: {fileID: 1517519280}
   _configuration:
   - _orbitableAreaType: 1
-    _patchCount: 32
-    _centerHeight: 15
+    _patchCount: 42
+    _centerHeight: 20
     _perPatchOccupation: 5
 --- !u!1001 &1653794682
 PrefabInstance:

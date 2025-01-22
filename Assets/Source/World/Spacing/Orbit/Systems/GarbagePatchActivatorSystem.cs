@@ -33,9 +33,9 @@ namespace SpaceJunkyard.World.Spacing
             {
                 var gbPatch = garbagePatch.ValueRO;
 
-                if (_patchesControl.ContainsKey(gbPatch.OrbitableBody))
+                if (_patchesControl.ContainsKey(gbPatch.Body))
                 {
-                    var controlArray = _patchesControl[gbPatch.OrbitableBody];
+                    var controlArray = _patchesControl[gbPatch.Body];
                     controlArray[gbPatch.PatchIndex] = garbagePatch;
                 }
                 else
@@ -44,7 +44,7 @@ namespace SpaceJunkyard.World.Spacing
                         gbPatch.PatchedOrbitConfiguration.PatchCount,
                         Allocator.Persistent);
                     controlArray[gbPatch.PatchIndex] = garbagePatch;
-                    _patchesControl.Add(gbPatch.OrbitableBody, controlArray);
+                    _patchesControl.Add(gbPatch.Body, controlArray);
                 }
             }
 
